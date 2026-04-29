@@ -1,0 +1,20 @@
+# Any virtual environment folders (anywhere)
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Lock files
+*.lock
+
+# Any folders named "raw data" or "processed data" (anywhere)
+**/raw\ data/
+**/processed\ data/
+
+# Downloaded files (anywhere)
+downloaded_files/
+
+# Text files
+*.txt
