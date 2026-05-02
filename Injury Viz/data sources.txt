@@ -1,0 +1,22 @@
+For avg_starting_15_mins_played for all comps:
+https://fbref.com/en/squads/18bb7c10/2025-2026/all_comps/Arsenal-Stats-All-Competitions
+
+https://fbref.com/en/squads/18bb7c10/2019-2020/all_comps/Arsenal-Stats-All-Competitions (eg for 2019-2020)
+
+8
+For a full list of absentees:
+https://www.transfermarkt.co.za/arsenal-fc/ausfallzeiten/verein/11?reldata=GB1%262025 (from way back)
+
+rows = players
+cols = GW
+values = status ("starting 11", "injured", "unknown")
+
+Can derive:
+- num time-loss injuries
+- num days lost
+- num games missed (top 15 players)
+- num games missed (total)
+- incidents per 90 minutes
+
+
+https://fbref.com/en/squads/18bb7c10/2022-2023/all_comps/Chelsea-Stats-All-Competitions

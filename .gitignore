@@ -1,20 +1,27 @@
-# Any virtual environment folders (anywhere)
+# Python Environments
 venv/
 .venv/
 
-# Python cache
+# Python Cache
 __pycache__/
 *.py[cod]
 
-# Lock files
-*.lock
+# Jupyter Notebook Cache
+.ipynb_checkpoints/
 
-# Any folders named "raw data" or "processed data" (anywhere)
-**/raw\ data/
-**/processed\ data/
+# Quarto Cache and Build Output
+/.quarto/
+_site/
+**/*.quarto_ipynb
 
-# Downloaded files (anywhere)
+# Data and Downloads
+**/raw data/
+**/processed data/
 downloaded_files/
 
-# Text files
-*.txt
+# Secrets (API Keys, Passwords)
+.env
+
+# OS System Files
+.DS_Store
+Thumbs.db
