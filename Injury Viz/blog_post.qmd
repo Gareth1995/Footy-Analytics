@@ -1,0 +1,96 @@
+---
+title: "What's the deal with all the injuries??"
+author: "Gareth Edwards"
+date: "2026-05-01"
+image: "injury_v_position.png" # This image will show up on the index page!
+categories: [Physio, Injury, Football]
+format:
+  html:
+    code-fold: true # Allows readers to hide/show your Python code
+---
+
+For all football fans out there, I think we are all thinking the same thing, "What is up with all the injuries this season??" The 2025/2026 Premier League season has produced more than x player injuries which has lead to an average amount of games missed per player as x. As an Arsenal fan I've built up hope that this year may be the year we win a big title, but these injuries are rocking us. Not as hard as they are rocking the probably soon-to-be-relegated Tottenham though. In fact, Arteta may be exceptionally over achieving right now. Here's why!
+
+Injuries cost a team points! Studies have shown that ...
+
+The worst part about this all is that we are seeing a clear increase in the amount of games a player misses, on average, in the Premier League due to injury:
+
+```{python}
+#| warning: false
+#| message: false
+#| column: page
+
+import pandas as pd
+from prophet import Prophet
+from prophet.plot import plot_plotly
+import plotly.express as px
+
+master_prem_fixtures = pd.read_csv('processed data/master_premier_league_fixtures.csv')
+master_absences = pd.read_csv('processed data/master_absence_long.csv')
+
+# ==========================================
+# 1. CALCULATE OVERALL AVERAGES PER SEASON
+# ==========================================
+# Get total squad sizes per season across all Top 6 teams
+team_squads = master_absences.groupby(['season', 'team_name'])['player_name'].nunique().reset_index(name='squad_size')
+season_squads = team_squads.groupby('season')['squad_size'].sum().reset_index()
+
+# Get total injuries per season across all Top 6 teams
+injuries_df = master_absences[master_absences['player_status'] == 'Absence/injury']
+season_injuries = injuries_df.groupby('season').size().reset_index(name='total_injuries')
+
+# Merge and calculate the average
+ts_df = pd.merge(season_squads, season_injuries, on='season', how='left')
+ts_df['total_injuries'] = ts_df['total_injuries'].fillna(0)
+ts_df['avg_injuries'] = ts_df['total_injuries'] / ts_df['squad_size']
+
+# ==========================================
+# 2. FORMAT DATA FOR PROPHET
+# ==========================================
+# Prophet strictly requires columns named 'ds' (datestamp) and 'y' (metric)
+# We convert "2019-2020" -> "2019-08-01" (Approximate start of the season)
+ts_df['ds'] = pd.to_datetime(ts_df['season'].str[:4] + '-08-01')
+ts_df['y'] = ts_df['avg_injuries']
+
+prophet_df = ts_df[['ds', 'y']].copy()
+
+# ==========================================
+# 3. TRAIN PROPHET & FORECAST
+# ==========================================
+# Initialize model (disabling smaller seasonalities since our data is yearly)
+m = Prophet(yearly_seasonality=False, weekly_seasonality=False, daily_seasonality=False)
+m.fit(prophet_df)
+
+# Create future timestamps for the next 3 seasons (2026, 2027, 2028)
+future_years = [2026, 2027, 2028]
+future_dates = pd.to_datetime([f"{y}-08-01" for y in future_years])
+future_df = pd.DataFrame({'ds': pd.concat([prophet_df['ds'], pd.Series(future_dates)], ignore_index=True)})
+
+# Predict the future trend
+forecast = m.predict(future_df)
+
+# ==========================================
+# 4. PLOT WITH PLOTLY
+# ==========================================
+# Use Prophet's native Plotly integration for beautiful interactive graphs
+fig = plot_plotly(m, forecast)
+
+fig.update_layout(
+    title='Prophet Forecast: Average Gameweeks Missed per Player (Top 6 Premier League)',
+    title_x=0.5,
+    xaxis_title='Season Start Date',
+    yaxis_title='Average Gameweeks Missed',
+    template='plotly_white',
+    hovermode='x unified',
+    margin=dict(t=60) # Adds a little extra top padding for the title
+)
+
+# Turn off Prophet's default financial widgets
+fig.update_xaxes(
+    rangeslider_visible=False,
+    rangeselector=None
+)
+
+# 💥 The ultimate fix: Just 'fig' so Quarto handles the rendering natively!
+fig
+```

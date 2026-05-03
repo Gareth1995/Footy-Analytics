@@ -2,7 +2,7 @@ project:
   type: website
   render:
     - "*.qmd"               # This grabs your index.qmd and about.qmd
-    - "**/viz build.ipynb"  # This ONLY grabs notebooks named exactly this in any subfolder
+    - "**/blog_post.ipynb"  # This ONLY grabs notebooks named exactly this in any subfolder
 
 website:
   title: "Football Analytics"
@@ -15,4 +15,5 @@ website:
 format:
   html:
     theme: cosmo # You can change this to darkly, sketchy, litera, etc.
-    css: styles.css
+    # css: styles.css
+    
