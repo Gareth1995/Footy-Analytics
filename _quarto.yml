@@ -10,8 +10,9 @@ website:
         text: Home
       - href: blog.qmd
         text: Articles
-      - href: cv.pdf
+      - href: my_cv.pdf
         text: CV
+        target: _blank
 
 format:
   html:
