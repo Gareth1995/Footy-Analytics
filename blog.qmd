@@ -5,5 +5,5 @@ listing:
     - "*/post.qmd"  # Looks in all folders, but ONLY grabs this exact filename
   type: default 
   sort: "date desc"
-  categories: false
+  categories: true
 ---
