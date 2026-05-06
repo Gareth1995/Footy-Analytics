@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Gareth Edwards">
+<meta name="dcterms.date" content="2026-05-01">
+
+<title>What’s the deal with all the injuries?? – Football Analytics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Football Analytics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">What’s the deal with all the injuries??</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Physio</div>
+    <div class="quarto-category">Injury</div>
+    <div class="quarto-category">Football</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Gareth Edwards </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 1, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="whats-the-deal-with-all-the-injuries" class="level1">
+<h1>What’s the deal with all the injuries??</h1>
+<div id="8fffeb02" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="eba9fd5e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>master_prem_fixtures <span class="op">=</span> pd.read_csv(<span class="st">'processed data</span><span class="er">\</span><span class="st">master_premier_league_fixtures.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>master_absences <span class="op">=</span> pd.read_csv(<span class="st">'processed data</span><span class="er">\</span><span class="st">master_absence_long.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>&lt;&gt;:3: SyntaxWarning: invalid escape sequence '\m'
+&lt;&gt;:4: SyntaxWarning: invalid escape sequence '\m'
+&lt;&gt;:3: SyntaxWarning: invalid escape sequence '\m'
+&lt;&gt;:4: SyntaxWarning: invalid escape sequence '\m'
+C:\Users\GARETHE\AppData\Local\Temp\ipykernel_28764\525279041.py:3: SyntaxWarning: invalid escape sequence '\m'
+  master_prem_fixtures = pd.read_csv('processed data\master_premier_league_fixtures.csv')
+C:\Users\GARETHE\AppData\Local\Temp\ipykernel_28764\525279041.py:4: SyntaxWarning: invalid escape sequence '\m'
+  master_absences = pd.read_csv('processed data\master_absence_long.csv')</code></pre>
+</div>
+</div>
+<section id="is-there-correlation-between-total-games-played-by-a-team-and-the-average-number-of-gameweeks-missed-by-a-player-in-the-prem" class="level3">
+<h3 class="anchored" data-anchor-id="is-there-correlation-between-total-games-played-by-a-team-and-the-average-number-of-gameweeks-missed-by-a-player-in-the-prem">Is there correlation between total games played by a team and the average number of gameweeks missed by a player in the prem?</h3>
+<div id="c727b118" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming master_prem_fixtures and master_absences are already loaded in memory)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. CALCULATE GAMES PLAYED PER TEAM/SEASON</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>games_played <span class="op">=</span> master_prem_fixtures.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'games_played'</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. CALCULATE SQUAD SIZE PER TEAM/SEASON</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># We count the unique number of players registered to each team per season</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>squad_sizes <span class="op">=</span> master_absences.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>])[<span class="st">'player_name'</span>].nunique().reset_index(name<span class="op">=</span><span class="st">'squad_size'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. CALCULATE TOTAL INJURIES</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>injuries_df <span class="op">=</span> master_absences[master_absences[<span class="st">'player_status'</span>] <span class="op">==</span> <span class="st">'Absence/injury'</span>]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>injury_counts <span class="op">=</span> injuries_df.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'total_injuries'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. MERGE AND CALCULATE THE AVERAGE</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the base metrics together</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> pd.merge(games_played, squad_sizes, on<span class="op">=</span>[<span class="st">'team_name'</span>, <span class="st">'season'</span>], how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> pd.merge(plot_df, injury_counts, on<span class="op">=</span>[<span class="st">'team_name'</span>, <span class="st">'season'</span>], how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill NaNs for teams with miraculously 0 injuries</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>plot_df[<span class="st">'total_injuries'</span>] <span class="op">=</span> plot_df[<span class="st">'total_injuries'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the critical metric: Average gameweeks missed per player</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>plot_df[<span class="st">'avg_injuries_per_player'</span>] <span class="op">=</span> plot_df[<span class="st">'total_injuries'</span>] <span class="op">/</span> plot_df[<span class="st">'squad_size'</span>]</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Round to 2 decimal places for cleaner hover tooltips</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>plot_df[<span class="st">'avg_injuries_per_player'</span>] <span class="op">=</span> plot_df[<span class="st">'avg_injuries_per_player'</span>].<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. GENERATE PLOTLY GRAPH</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    plot_df,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'games_played'</span>,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'avg_injuries_per_player'</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'team_name'</span>,          </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>[<span class="st">'season'</span>, <span class="st">'squad_size'</span>, <span class="st">'total_injuries'</span>], <span class="co"># Added deeper context to hover</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    trendline<span class="op">=</span><span class="st">'ols'</span>,            </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    trendline_scope<span class="op">=</span><span class="st">'overall'</span>,  </span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Impact of Match Congestion on Average Player Injury Rates (Top 6 Premier League)'</span>,</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        <span class="st">'games_played'</span>: <span class="st">'Total Matches Played (All Competitions)'</span>,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="st">'avg_injuries_per_player'</span>: <span class="st">'Average Gameweeks Missed per Player'</span>,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">'team_name'</span>: <span class="st">'Club'</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">'squad_size'</span>: <span class="st">'Squad Size'</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">'total_injuries'</span>: <span class="st">'Total Injury Days'</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Polish the visuals</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>fig.update_traces(marker<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">12</span>, opacity<span class="op">=</span><span class="fl">0.8</span>, line<span class="op">=</span><span class="bu">dict</span>(width<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'DarkSlateGrey'</span>)))</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>fig.update_layout(template<span class="op">=</span><span class="st">'plotly_white'</span>, title_x<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+</section>
+<section id="has-average-gameweeks-missed-per-player-increased-over-time" class="level3">
+<h3 class="anchored" data-anchor-id="has-average-gameweeks-missed-per-player-increased-over-time">Has average gameweeks missed per player increased over time?</h3>
+<div id="eda59344" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prophet <span class="im">import</span> Prophet</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prophet.plot <span class="im">import</span> plot_plotly</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming master_absences is already loaded in memory)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. CALCULATE OVERALL AVERAGES PER SEASON</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Get total squad sizes per season across all Top 6 teams</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>team_squads <span class="op">=</span> master_absences.groupby([<span class="st">'season'</span>, <span class="st">'team_name'</span>])[<span class="st">'player_name'</span>].nunique().reset_index(name<span class="op">=</span><span class="st">'squad_size'</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>season_squads <span class="op">=</span> team_squads.groupby(<span class="st">'season'</span>)[<span class="st">'squad_size'</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Get total injuries per season across all Top 6 teams</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>injuries_df <span class="op">=</span> master_absences[master_absences[<span class="st">'player_status'</span>] <span class="op">==</span> <span class="st">'Absence/injury'</span>]</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>season_injuries <span class="op">=</span> injuries_df.groupby(<span class="st">'season'</span>).size().reset_index(name<span class="op">=</span><span class="st">'total_injuries'</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge and calculate the average</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>ts_df <span class="op">=</span> pd.merge(season_squads, season_injuries, on<span class="op">=</span><span class="st">'season'</span>, how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>ts_df[<span class="st">'total_injuries'</span>] <span class="op">=</span> ts_df[<span class="st">'total_injuries'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>ts_df[<span class="st">'avg_injuries'</span>] <span class="op">=</span> ts_df[<span class="st">'total_injuries'</span>] <span class="op">/</span> ts_df[<span class="st">'squad_size'</span>]</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. FORMAT DATA FOR PROPHET</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Prophet strictly requires columns named 'ds' (datestamp) and 'y' (metric)</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co"># We convert "2019-2020" -&gt; "2019-08-01" (Approximate start of the season)</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>ts_df[<span class="st">'ds'</span>] <span class="op">=</span> pd.to_datetime(ts_df[<span class="st">'season'</span>].<span class="bu">str</span>[:<span class="dv">4</span>] <span class="op">+</span> <span class="st">'-08-01'</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>ts_df[<span class="st">'y'</span>] <span class="op">=</span> ts_df[<span class="st">'avg_injuries'</span>]</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>prophet_df <span class="op">=</span> ts_df[[<span class="st">'ds'</span>, <span class="st">'y'</span>]].copy()</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"[*] Training Prophet Model on historical injury data..."</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. TRAIN PROPHET &amp; FORECAST</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize model (disabling smaller seasonalities since our data is yearly)</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> Prophet(yearly_seasonality<span class="op">=</span><span class="va">False</span>, weekly_seasonality<span class="op">=</span><span class="va">False</span>, daily_seasonality<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>m.fit(prophet_df)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Create future timestamps for the next 3 seasons (2026, 2027, 2028)</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>future_years <span class="op">=</span> [<span class="dv">2026</span>, <span class="dv">2027</span>, <span class="dv">2028</span>]</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>future_dates <span class="op">=</span> pd.to_datetime([<span class="ss">f"</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">-08-01"</span> <span class="cf">for</span> y <span class="kw">in</span> future_years])</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>future_df <span class="op">=</span> pd.DataFrame({<span class="st">'ds'</span>: pd.concat([prophet_df[<span class="st">'ds'</span>], pd.Series(future_dates)], ignore_index<span class="op">=</span><span class="va">True</span>)})</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict the future trend</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>forecast <span class="op">=</span> m.predict(future_df)</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. PLOT WITH PLOTLY</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Use Prophet's native Plotly integration for beautiful interactive graphs</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plot_plotly(m, forecast)</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Prophet Forecast: Average Gameweeks Missed per Player (Top 6 Premier League)'</span>,</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    title_x<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">'Season Start Date'</span>,</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">'Average Gameweeks Missed'</span>,</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span><span class="st">'plotly_white'</span>,</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>    hovermode<span class="op">=</span><span class="st">'x unified'</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[*] Training Prophet Model on historical injury data...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23:02:50 - cmdstanpy - INFO - Chain [1] start processing
+23:02:51 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+<p>Researching backing the increase in injuries over time</p>
+<p>The Escalation of the Global Epidemiological BurdenOver the past two decades, the incidence and cumulative burden of specific injury typologies have surged dramatically across elite European football. The UEFA Elite Club Injury Study, which aggregates data across 21 consecutive seasons (2001/02 to 2021/22) from top-tier European clubs including EPL participants, reveals a profound epidemiological shift. Hamstring injuries, which represent the most ubiquitous and disruptive affliction in professional football, accounted for 12% of all reported injuries during the 2001/02 season. By the culmination of the 2021/22 season, this proportion had doubled to 24%. Correspondingly, the percentage of total injury absence days—a direct metric of the injury burden and matches missed—caused by hamstring pathologies increased from 10% to 20% over the identical timeframe.Recent short-term longitudinal analyses further underscore this acceleration. Between the 2014/15 and 2021/22 seasons, the incidence of hamstring injuries sustained during training sessions increased by 6.7% annually, while the associated injury burden (absence days) increased by an alarming 9.0% annually. 1 Concurrently, the incidence of hamstring injuries sustained during competitive match play rose by 3.9% annually. 1 This data unequivocally demonstrates that not only are injuries occurring more frequently, but their severity and the resulting time lost to rehabilitation are compounding year over year. (Gemini: Sources: https://bjsm.bmj.com/content/57/5/292)</p>
+<p>The empirical data across all available longitudinal vectors irrevocably confirms that the absolute rate of injuries, the severity of these injuries as measured by total days lost, and the consequent matches missed per individual player have escalated significantly over the past two decades in the English Premier League.</p>
+<section id="how-does-this-trend-compare-to-number-of-games-played-for-a-team-over-time" class="level4">
+<h4 class="anchored" data-anchor-id="how-does-this-trend-compare-to-number-of-games-played-for-a-team-over-time">How does this trend compare to number of games played for a team over time?</h4>
+<div id="b6af7436" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prophet <span class="im">import</span> Prophet</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotly.subplots <span class="im">import</span> make_subplots</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. DATA AGGREGATION</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># A. Average Injuries per Player (From previous logic)</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>team_squads <span class="op">=</span> master_absences.groupby([<span class="st">'season'</span>, <span class="st">'team_name'</span>])[<span class="st">'player_name'</span>].nunique().reset_index(name<span class="op">=</span><span class="st">'squad_size'</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>season_squads <span class="op">=</span> team_squads.groupby(<span class="st">'season'</span>)[<span class="st">'squad_size'</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>injuries_df <span class="op">=</span> master_absences[master_absences[<span class="st">'player_status'</span>] <span class="op">==</span> <span class="st">'Absence/injury'</span>]</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>season_injuries <span class="op">=</span> injuries_df.groupby(<span class="st">'season'</span>).size().reset_index(name<span class="op">=</span><span class="st">'total_injuries'</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>ts_injuries <span class="op">=</span> pd.merge(season_squads, season_injuries, on<span class="op">=</span><span class="st">'season'</span>, how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>ts_injuries[<span class="st">'total_injuries'</span>] <span class="op">=</span> ts_injuries[<span class="st">'total_injuries'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>ts_injuries[<span class="st">'avg_injuries'</span>] <span class="op">=</span> ts_injuries[<span class="st">'total_injuries'</span>] <span class="op">/</span> ts_injuries[<span class="st">'squad_size'</span>]</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># B. Average Games Played per Top 6 Team</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>games_df <span class="op">=</span> master_prem_fixtures.groupby([<span class="st">'season'</span>, <span class="st">'team_name'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'games_played'</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>season_games <span class="op">=</span> games_df.groupby(<span class="st">'season'</span>)[<span class="st">'games_played'</span>].mean().reset_index(name<span class="op">=</span><span class="st">'avg_games'</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co"># C. Master Time Series Dataset</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>ts_master <span class="op">=</span> pd.merge(ts_injuries, season_games, on<span class="op">=</span><span class="st">'season'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>ts_master[<span class="st">'ds'</span>] <span class="op">=</span> pd.to_datetime(ts_master[<span class="st">'season'</span>].<span class="bu">str</span>[:<span class="dv">4</span>] <span class="op">+</span> <span class="st">'-08-01'</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"[*] Data aggregated. Training Dual Prophet Models..."</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. TRAIN DUAL PROPHET MODELS</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Future dates for forecasting (Next 3 seasons)</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>future_dates <span class="op">=</span> pd.to_datetime([<span class="ss">f"</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">-08-01"</span> <span class="cf">for</span> y <span class="kw">in</span> [<span class="dv">2026</span>, <span class="dv">2027</span>, <span class="dv">2028</span>]])</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>future_df <span class="op">=</span> pd.DataFrame({<span class="st">'ds'</span>: pd.concat([ts_master[<span class="st">'ds'</span>], pd.Series(future_dates)], ignore_index<span class="op">=</span><span class="va">True</span>)})</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1: Injuries</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>m_inj <span class="op">=</span> Prophet(yearly_seasonality<span class="op">=</span><span class="va">False</span>, weekly_seasonality<span class="op">=</span><span class="va">False</span>, daily_seasonality<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>m_inj.fit(ts_master[[<span class="st">'ds'</span>, <span class="st">'avg_injuries'</span>]].rename(columns<span class="op">=</span>{<span class="st">'avg_injuries'</span>: <span class="st">'y'</span>}))</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>forecast_inj <span class="op">=</span> m_inj.predict(future_df)</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2: Games Played</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>m_games <span class="op">=</span> Prophet(yearly_seasonality<span class="op">=</span><span class="va">False</span>, weekly_seasonality<span class="op">=</span><span class="va">False</span>, daily_seasonality<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>m_games.fit(ts_master[[<span class="st">'ds'</span>, <span class="st">'avg_games'</span>]].rename(columns<span class="op">=</span>{<span class="st">'avg_games'</span>: <span class="st">'y'</span>}))</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>forecast_games <span class="op">=</span> m_games.predict(future_df)</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. BUILD DUAL-AXIS PLOTLY GRAPH</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Create figure with secondary y-axis</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> make_subplots(specs<span class="op">=</span>[[{<span class="st">"secondary_y"</span>: <span class="va">True</span>}]])</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TRACE 1: INJURIES (Left Axis - Red) ---</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Actual Data Points</span></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>ts_master[<span class="st">'ds'</span>], y<span class="op">=</span>ts_master[<span class="st">'avg_injuries'</span>], name<span class="op">=</span><span class="st">"Actual Avg Injuries"</span>,</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'markers'</span>, marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'red'</span>, size<span class="op">=</span><span class="dv">10</span>)),</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Prophet Trendline</span></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>forecast_inj[<span class="st">'ds'</span>], y<span class="op">=</span>forecast_inj[<span class="st">'trend'</span>], name<span class="op">=</span><span class="st">"Trend: Injuries"</span>,</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'lines'</span>, line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'red'</span>, dash<span class="op">=</span><span class="st">'dot'</span>)),</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TRACE 2: GAMES PLAYED (Right Axis - Blue) ---</span></span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Actual Data Points</span></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>ts_master[<span class="st">'ds'</span>], y<span class="op">=</span>ts_master[<span class="st">'avg_games'</span>], name<span class="op">=</span><span class="st">"Actual Avg Games"</span>,</span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'markers'</span>, marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'blue'</span>, size<span class="op">=</span><span class="dv">10</span>)),</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Prophet Trendline</span></span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>forecast_games[<span class="st">'ds'</span>], y<span class="op">=</span>forecast_games[<span class="st">'trend'</span>], name<span class="op">=</span><span class="st">"Trend: Games Played"</span>,</span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'lines'</span>, line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'blue'</span>, dash<span class="op">=</span><span class="st">'dot'</span>)),</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. POLISH AND DISPLAY</span></span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Prophet Forecast: Match Congestion vs. Injury Rates Over Time'</span>,</span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>    title_x<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span><span class="st">'plotly_white'</span>,</span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>    hovermode<span class="op">=</span><span class="st">'x unified'</span>,</span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>    legend<span class="op">=</span><span class="bu">dict</span>(orientation<span class="op">=</span><span class="st">"h"</span>, yanchor<span class="op">=</span><span class="st">"bottom"</span>, y<span class="op">=</span><span class="fl">1.02</span>, xanchor<span class="op">=</span><span class="st">"right"</span>, x<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a><span class="co"># Axis Titles</span></span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>fig.update_xaxes(title_text<span class="op">=</span><span class="st">"Season Start Date"</span>)</span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(title_text<span class="op">=</span><span class="st">"&lt;b&gt;Avg Gameweeks Missed&lt;/b&gt; (Per Player)"</span>, color<span class="op">=</span><span class="st">"red"</span>, secondary_y<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(title_text<span class="op">=</span><span class="st">"&lt;b&gt;Avg Matches Played&lt;/b&gt; (Per Team)"</span>, color<span class="op">=</span><span class="st">"blue"</span>, secondary_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[*] Data aggregated. Training Dual Prophet Models...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23:07:25 - cmdstanpy - INFO - Chain [1] start processing
+23:07:25 - cmdstanpy - INFO - Chain [1] done processing
+23:07:25 - cmdstanpy - INFO - Chain [1] start processing
+23:07:26 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+<p>The above plot is counterintuitive in that the number of matches played by the top 6 clubs (on average) doesn’t have an upward trend that matches the avg GW missed per player. This says a few things:</p>
+<ul>
+<li>Top 6 clubs are not playing more matches on average every year</li>
+<li>Number of club matches played by the top 6 doesn’t correlate to more gws missed by injury per player</li>
+</ul>
+<p>So what is causing the increased injuries? - Either we are seeing more international matches over time? - Match tactics are high press and too demanding.</p>
+<p>More international matches cannot be the issue if we do not already see a clear correlation between more matches played and more gws missed per player.</p>
+</section>
+<section id="how-does-this-trend-compare-to-average-match-density-over-time" class="level4">
+<h4 class="anchored" data-anchor-id="how-does-this-trend-compare-to-average-match-density-over-time">How does this trend compare to average match density over time?</h4>
+<div id="fdd36e0e" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prophet <span class="im">import</span> Prophet</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prophet.plot <span class="im">import</span> plot_plotly</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming master_prem_fixtures is already loaded in memory)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. CALCULATE REST DAYS PER MATCH</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure date column is a datetime object</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>master_prem_fixtures[<span class="st">'date'</span>] <span class="op">=</span> pd.to_datetime(master_prem_fixtures[<span class="st">'date'</span>])</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort chronologically per team to calculate the exact rest between games</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>fixtures_sorted <span class="op">=</span> master_prem_fixtures.sort_values(by<span class="op">=</span>[<span class="st">'team_name'</span>, <span class="st">'date'</span>])</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate difference in days between consecutive matches</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>fixtures_sorted[<span class="st">'rest_days'</span>] <span class="op">=</span> fixtures_sorted.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>])[<span class="st">'date'</span>].diff().dt.days</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. AGGREGATE TO A SEASONAL LEAGUE AVERAGE</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop the first match of the season (which has NaN rest days)</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>valid_rest_days <span class="op">=</span> fixtures_sorted.dropna(subset<span class="op">=</span>[<span class="st">'rest_days'</span>])</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the overall average rest days across ALL Top 6 teams per season</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>season_rest_df <span class="op">=</span> valid_rest_days.groupby(<span class="st">'season'</span>)[<span class="st">'rest_days'</span>].mean().reset_index(name<span class="op">=</span><span class="st">'avg_rest_days'</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. FORMAT FOR PROPHET</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert "2019-2020" string into a datestamp ("2019-08-01") for Prophet</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>season_rest_df[<span class="st">'ds'</span>] <span class="op">=</span> pd.to_datetime(season_rest_df[<span class="st">'season'</span>].<span class="bu">str</span>[:<span class="dv">4</span>] <span class="op">+</span> <span class="st">'-08-01'</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>season_rest_df[<span class="st">'y'</span>] <span class="op">=</span> season_rest_df[<span class="st">'avg_rest_days'</span>]</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>prophet_df <span class="op">=</span> season_rest_df[[<span class="st">'ds'</span>, <span class="st">'y'</span>]].copy()</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"[*] Training Prophet Model on historical schedule density..."</span>)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. TRAIN PROPHET &amp; FORECAST</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize model (disabling sub-yearly seasonalities since our data is aggregated per year)</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> Prophet(yearly_seasonality<span class="op">=</span><span class="va">False</span>, weekly_seasonality<span class="op">=</span><span class="va">False</span>, daily_seasonality<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>m.fit(prophet_df)</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Create future timestamps for the next 3 seasons (2026, 2027, 2028)</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>future_years <span class="op">=</span> [<span class="dv">2026</span>, <span class="dv">2027</span>, <span class="dv">2028</span>]</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>future_dates <span class="op">=</span> pd.to_datetime([<span class="ss">f"</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">-08-01"</span> <span class="cf">for</span> y <span class="kw">in</span> future_years])</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>future_df <span class="op">=</span> pd.DataFrame({<span class="st">'ds'</span>: pd.concat([prophet_df[<span class="st">'ds'</span>], pd.Series(future_dates)], ignore_index<span class="op">=</span><span class="va">True</span>)})</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict the future trend</span></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>forecast <span class="op">=</span> m.predict(future_df)</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. PLOT WITH PLOTLY</span></span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plot_plotly(m, forecast)</span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Prophet Forecast: Average Rest Days Between Matches (Top 6 Premier League)'</span>,</span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>    title_x<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">'Season Start Date'</span>,</span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">'Average Rest Days Between Fixtures'</span>,</span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span><span class="st">'plotly_white'</span>,</span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>    hovermode<span class="op">=</span><span class="st">'x unified'</span></span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[*] Training Prophet Model on historical schedule density...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23:26:34 - cmdstanpy - INFO - Chain [1] start processing
+23:26:34 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+<p>There are not much papers highlighting the link between match congestion vs player injuries. The following review looks at 8 articles speaking about this topic and have found the following:</p>
+<ul>
+<li>Congested fixture schedules expose players to increased match injury incidence</li>
+<li>However, layoff duration was typically lower during congested periods</li>
+<li>One study identified a lower training injury incidence during congested periods</li>
+</ul>
+<p>Research does show that rest days are decreasing over time with the prem players showing an average of just 3.5 recovery days between matches.</p>
+<p>“The correlation between match proximity and injury risk is highly sensitive. Epidemiological studies reveal that when a subsequent match is played within 24 hours of a previous fixture, the injury risk spikes by an astronomical 3.8 to 6.8 times compared to matches preceded by a standard 3-to-7-day recovery break. Even a 3-day recovery window is strongly associated with an increased incidence of both general injuries and specific lower extremity trauma. Evidence suggests that a minimum of five days is required for complete neuromuscular and central nervous system recovery following a high-intensity professional match. However, the reality of the EPL schedule dictates that players in top leagues average merely 3.5 days between matches. Furthermore, players operating in high-intensity positional roles—such as wide forwards, attacking midfielders, and fullbacks—who are subjected to two or more matches within a rigid four-day window exhibit a 28% higher risk of sustaining soft tissue injuries.”</p>
+<div id="e96ccf52" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prophet <span class="im">import</span> Prophet</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotly.subplots <span class="im">import</span> make_subplots</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming master_prem_fixtures and master_absences are already loaded in memory)</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. DATA AGGREGATION</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># A. Average Injuries per Player </span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>team_squads <span class="op">=</span> master_absences.groupby([<span class="st">'season'</span>, <span class="st">'team_name'</span>])[<span class="st">'player_name'</span>].nunique().reset_index(name<span class="op">=</span><span class="st">'squad_size'</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>season_squads <span class="op">=</span> team_squads.groupby(<span class="st">'season'</span>)[<span class="st">'squad_size'</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>injuries_df <span class="op">=</span> master_absences[master_absences[<span class="st">'player_status'</span>] <span class="op">==</span> <span class="st">'Absence/injury'</span>]</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>season_injuries <span class="op">=</span> injuries_df.groupby(<span class="st">'season'</span>).size().reset_index(name<span class="op">=</span><span class="st">'total_injuries'</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>ts_injuries <span class="op">=</span> pd.merge(season_squads, season_injuries, on<span class="op">=</span><span class="st">'season'</span>, how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>ts_injuries[<span class="st">'total_injuries'</span>] <span class="op">=</span> ts_injuries[<span class="st">'total_injuries'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>ts_injuries[<span class="st">'avg_injuries'</span>] <span class="op">=</span> ts_injuries[<span class="st">'total_injuries'</span>] <span class="op">/</span> ts_injuries[<span class="st">'squad_size'</span>]</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co"># B. Average Rest Days per Match</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>master_prem_fixtures[<span class="st">'date'</span>] <span class="op">=</span> pd.to_datetime(master_prem_fixtures[<span class="st">'date'</span>])</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>fixtures_sorted <span class="op">=</span> master_prem_fixtures.sort_values(by<span class="op">=</span>[<span class="st">'team_name'</span>, <span class="st">'date'</span>])</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>fixtures_sorted[<span class="st">'rest_days'</span>] <span class="op">=</span> fixtures_sorted.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>])[<span class="st">'date'</span>].diff().dt.days</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>valid_rest_days <span class="op">=</span> fixtures_sorted.dropna(subset<span class="op">=</span>[<span class="st">'rest_days'</span>])</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>season_rest_df <span class="op">=</span> valid_rest_days.groupby(<span class="st">'season'</span>)[<span class="st">'rest_days'</span>].mean().reset_index(name<span class="op">=</span><span class="st">'avg_rest_days'</span>)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co"># C. Master Time Series Dataset</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>ts_master <span class="op">=</span> pd.merge(ts_injuries, season_rest_df, on<span class="op">=</span><span class="st">'season'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>ts_master[<span class="st">'ds'</span>] <span class="op">=</span> pd.to_datetime(ts_master[<span class="st">'season'</span>].<span class="bu">str</span>[:<span class="dv">4</span>] <span class="op">+</span> <span class="st">'-08-01'</span>)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. CALCULATE CORRELATION &amp; R-SQUARED</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Pearson Correlation Coefficient (r)</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>correlation <span class="op">=</span> ts_master[<span class="st">'avg_rest_days'</span>].corr(ts_master[<span class="st">'avg_injuries'</span>])</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate R-squared</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>r_squared <span class="op">=</span> correlation <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"[*] Pearson Correlation (r): </span><span class="sc">{</span>correlation<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"[*] R-squared (R²): </span><span class="sc">{</span>r_squared<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. TRAIN DUAL PROPHET MODELS</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>future_dates <span class="op">=</span> pd.to_datetime([<span class="ss">f"</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">-08-01"</span> <span class="cf">for</span> y <span class="kw">in</span> [<span class="dv">2026</span>, <span class="dv">2027</span>, <span class="dv">2028</span>]])</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>future_df <span class="op">=</span> pd.DataFrame({<span class="st">'ds'</span>: pd.concat([ts_master[<span class="st">'ds'</span>], pd.Series(future_dates)], ignore_index<span class="op">=</span><span class="va">True</span>)})</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1: Injuries</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>m_inj <span class="op">=</span> Prophet(yearly_seasonality<span class="op">=</span><span class="va">False</span>, weekly_seasonality<span class="op">=</span><span class="va">False</span>, daily_seasonality<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>m_inj.fit(ts_master[[<span class="st">'ds'</span>, <span class="st">'avg_injuries'</span>]].rename(columns<span class="op">=</span>{<span class="st">'avg_injuries'</span>: <span class="st">'y'</span>}))</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>forecast_inj <span class="op">=</span> m_inj.predict(future_df)</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2: Rest Days</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>m_rest <span class="op">=</span> Prophet(yearly_seasonality<span class="op">=</span><span class="va">False</span>, weekly_seasonality<span class="op">=</span><span class="va">False</span>, daily_seasonality<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>m_rest.fit(ts_master[[<span class="st">'ds'</span>, <span class="st">'avg_rest_days'</span>]].rename(columns<span class="op">=</span>{<span class="st">'avg_rest_days'</span>: <span class="st">'y'</span>}))</span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>forecast_rest <span class="op">=</span> m_rest.predict(future_df)</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. BUILD DUAL-AXIS PLOTLY GRAPH</span></span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> make_subplots(specs<span class="op">=</span>[[{<span class="st">"secondary_y"</span>: <span class="va">True</span>}]])</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TRACE 1: INJURIES (Left Axis - Red) ---</span></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>ts_master[<span class="st">'ds'</span>], y<span class="op">=</span>ts_master[<span class="st">'avg_injuries'</span>], name<span class="op">=</span><span class="st">"Actual Avg Injuries"</span>,</span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'markers'</span>, marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'red'</span>, size<span class="op">=</span><span class="dv">10</span>)),</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>forecast_inj[<span class="st">'ds'</span>], y<span class="op">=</span>forecast_inj[<span class="st">'trend'</span>], name<span class="op">=</span><span class="st">"Trend: Injuries"</span>,</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'lines'</span>, line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'red'</span>, dash<span class="op">=</span><span class="st">'dot'</span>)),</span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TRACE 2: REST DAYS (Right Axis - Green) ---</span></span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>ts_master[<span class="st">'ds'</span>], y<span class="op">=</span>ts_master[<span class="st">'avg_rest_days'</span>], name<span class="op">=</span><span class="st">"Actual Avg Rest Days"</span>,</span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'markers'</span>, marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'green'</span>, size<span class="op">=</span><span class="dv">10</span>)),</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>fig.add_trace(</span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>    go.Scatter(x<span class="op">=</span>forecast_rest[<span class="st">'ds'</span>], y<span class="op">=</span>forecast_rest[<span class="st">'trend'</span>], name<span class="op">=</span><span class="st">"Trend: Rest Days"</span>,</span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>               mode<span class="op">=</span><span class="st">'lines'</span>, line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'green'</span>, dash<span class="op">=</span><span class="st">'dot'</span>)),</span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>    secondary_y<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. POLISH AND ANNOTATE</span></span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Prophet Forecast: Match Congestion (Rest Days) vs. Injury Rates Over Time'</span>,</span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>    title_x<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span><span class="st">'plotly_white'</span>,</span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a>    hovermode<span class="op">=</span><span class="st">'x unified'</span>,</span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>    legend<span class="op">=</span><span class="bu">dict</span>(orientation<span class="op">=</span><span class="st">"h"</span>, yanchor<span class="op">=</span><span class="st">"bottom"</span>, y<span class="op">=</span><span class="fl">1.02</span>, xanchor<span class="op">=</span><span class="st">"right"</span>, x<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a>fig.update_xaxes(title_text<span class="op">=</span><span class="st">"Season Start Date"</span>)</span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(title_text<span class="op">=</span><span class="st">"&lt;b&gt;Avg Gameweeks Missed&lt;/b&gt; (Per Player)"</span>, color<span class="op">=</span><span class="st">"red"</span>, secondary_y<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(title_text<span class="op">=</span><span class="st">"&lt;b&gt;Avg Rest Days Between Matches&lt;/b&gt;"</span>, color<span class="op">=</span><span class="st">"green"</span>, secondary_y<span class="op">=</span><span class="va">True</span>, autorange<span class="op">=</span><span class="st">"reversed"</span>)</span>
+<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[*] Pearson Correlation (r): 0.054
+[*] R-squared (R²): 0.003</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23:32:22 - cmdstanpy - INFO - Chain [1] start processing
+23:32:22 - cmdstanpy - INFO - Chain [1] done processing
+23:32:23 - cmdstanpy - INFO - Chain [1] start processing
+23:32:23 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+<p>So this plot tells us that the trend lines are correlating, but the points are not well correlated.</p>
+<p>Football is becoming more match dense for the top 6 clubs AND there are more games missed in the prem per player on average but it does not mean that more game density leads to more gameweeks missed.</p>
+</section>
+</section>
+<section id="has-number-of-distinct-player-injuries-increased-over-time" class="level3">
+<h3 class="anchored" data-anchor-id="has-number-of-distinct-player-injuries-increased-over-time">Has number of distinct player injuries increased over time?</h3>
+<div id="96d8bf1d" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming master_absences is already loaded in memory)</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. DATA AGGREGATION: DISTINCT PLAYERS</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to only look at actual injuries</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>injuries_df <span class="op">=</span> master_absences[master_absences[<span class="st">'player_status'</span>] <span class="op">==</span> <span class="st">'Absence/injury'</span>]</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the unique number of individual players injured per team, per season</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>distinct_injured <span class="op">=</span> injuries_df.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>])[<span class="st">'player_name'</span>].nunique().reset_index(name<span class="op">=</span><span class="st">'unique_injured_players'</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Datetime column so the OLS trendline math works properly</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>distinct_injured[<span class="st">'ds'</span>] <span class="op">=</span> pd.to_datetime(distinct_injured[<span class="st">'season'</span>].<span class="bu">str</span>[:<span class="dv">4</span>] <span class="op">+</span> <span class="st">'-08-01'</span>)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. GENERATE CLUB-LEVEL TREND GRAPH</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co"># By putting 'team_name' in the color parameter, Plotly automatically draws a separate trendline for each club!</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    distinct_injured,</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'ds'</span>,</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'unique_injured_players'</span>,</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'team_name'</span>,</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    trendline<span class="op">=</span><span class="st">'ols'</span>, </span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Spread of the Crisis: Distinct Players Injured per Season (by Club)'</span>,</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ds'</span>: <span class="st">'Season'</span>,</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">'unique_injured_players'</span>: <span class="st">'Total Unique Players Injured'</span>,</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">'team_name'</span>: <span class="st">'Club'</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Polish visuals</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>fig.update_traces(marker<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">12</span>, opacity<span class="op">=</span><span class="fl">0.8</span>, line<span class="op">=</span><span class="bu">dict</span>(width<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'DarkSlateGrey'</span>)))</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>fig.update_layout(template<span class="op">=</span><span class="st">'plotly_white'</span>, title_x<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the X-axis to show the readable '2019-2020' string instead of the raw date</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>unique_dates <span class="op">=</span> <span class="bu">sorted</span>(distinct_injured[<span class="st">'ds'</span>].unique())</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>unique_seasons <span class="op">=</span> <span class="bu">sorted</span>(distinct_injured[<span class="st">'season'</span>].unique())</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>fig.update_xaxes(tickvals<span class="op">=</span>unique_dates, ticktext<span class="op">=</span>unique_seasons)</span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+</section>
+<section id="how-strongly-does-average-gameweeks-missed-per-player-influence-whether-a-team-wins-the-league-or-not" class="level3">
+<h3 class="anchored" data-anchor-id="how-strongly-does-average-gameweeks-missed-per-player-influence-whether-a-team-wins-the-league-or-not">How strongly does average gameweeks missed per player influence whether a team wins the league or not</h3>
+<div id="98a47f0d" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming master_absences is loaded)</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. CALCULATE AVG INJURIES PER PLAYER</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>squad_sizes <span class="op">=</span> master_absences.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>])[<span class="st">'player_name'</span>].nunique().reset_index(name<span class="op">=</span><span class="st">'squad_size'</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>injuries_df <span class="op">=</span> master_absences[master_absences[<span class="st">'player_status'</span>] <span class="op">==</span> <span class="st">'Absence/injury'</span>]</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>injury_counts <span class="op">=</span> injuries_df.groupby([<span class="st">'team_name'</span>, <span class="st">'season'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'total_injuries'</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>inj_stats <span class="op">=</span> pd.merge(squad_sizes, injury_counts, on<span class="op">=</span>[<span class="st">'team_name'</span>, <span class="st">'season'</span>], how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>inj_stats[<span class="st">'total_injuries'</span>] <span class="op">=</span> inj_stats[<span class="st">'total_injuries'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>inj_stats[<span class="st">'avg_injuries'</span>] <span class="op">=</span> (inj_stats[<span class="st">'total_injuries'</span>] <span class="op">/</span> inj_stats[<span class="st">'squad_size'</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. INJECT ACTUAL LEAGUE FINISHING POSITIONS</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Historical league positions for the Top 6 teams (19/20 through 23/24)</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: 24/25 is excluded as the season is not finished yet.</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>league_positions <span class="op">=</span> {</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2019-2020'</span>: {<span class="st">'Liverpool'</span>: <span class="dv">1</span>, <span class="st">'Man City'</span>: <span class="dv">2</span>, <span class="st">'Man United'</span>: <span class="dv">3</span>, <span class="st">'Chelsea'</span>: <span class="dv">4</span>, <span class="st">'Tottenham'</span>: <span class="dv">6</span>, <span class="st">'Arsenal'</span>: <span class="dv">8</span>},</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2020-2021'</span>: {<span class="st">'Man City'</span>: <span class="dv">1</span>, <span class="st">'Man United'</span>: <span class="dv">2</span>, <span class="st">'Liverpool'</span>: <span class="dv">3</span>, <span class="st">'Chelsea'</span>: <span class="dv">4</span>, <span class="st">'Tottenham'</span>: <span class="dv">7</span>, <span class="st">'Arsenal'</span>: <span class="dv">8</span>},</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2021-2022'</span>: {<span class="st">'Man City'</span>: <span class="dv">1</span>, <span class="st">'Liverpool'</span>: <span class="dv">2</span>, <span class="st">'Chelsea'</span>: <span class="dv">3</span>, <span class="st">'Tottenham'</span>: <span class="dv">4</span>, <span class="st">'Arsenal'</span>: <span class="dv">5</span>, <span class="st">'Man United'</span>: <span class="dv">6</span>},</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2022-2023'</span>: {<span class="st">'Man City'</span>: <span class="dv">1</span>, <span class="st">'Arsenal'</span>: <span class="dv">2</span>, <span class="st">'Man United'</span>: <span class="dv">3</span>, <span class="st">'Liverpool'</span>: <span class="dv">5</span>, <span class="st">'Tottenham'</span>: <span class="dv">8</span>, <span class="st">'Chelsea'</span>: <span class="dv">12</span>},</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2023-2024'</span>: {<span class="st">'Man City'</span>: <span class="dv">1</span>, <span class="st">'Arsenal'</span>: <span class="dv">2</span>, <span class="st">'Liverpool'</span>: <span class="dv">3</span>, <span class="st">'Tottenham'</span>: <span class="dv">5</span>, <span class="st">'Chelsea'</span>: <span class="dv">6</span>, <span class="st">'Man United'</span>: <span class="dv">8</span>},</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2024-2025'</span>: {<span class="st">'Liverpool'</span>: <span class="dv">1</span>, <span class="st">'Arsenal'</span>: <span class="dv">2</span>, <span class="st">'Man City'</span>: <span class="dv">3</span>, <span class="st">'Chelsea'</span>: <span class="dv">4</span>, <span class="st">'Man United'</span>: <span class="dv">15</span>, <span class="st">'Tottenham'</span>: <span class="dv">17</span>}</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Flatten the dictionary into a DataFrame for merging</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>pos_data <span class="op">=</span> []</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> season, teams <span class="kw">in</span> league_positions.items():</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> team, rank <span class="kw">in</span> teams.items():</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Standardize the team name to match our Transfermarkt formatting</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>        tm_team_name <span class="op">=</span> team.replace(<span class="st">' '</span>, <span class="st">'_'</span>).title() <span class="cf">if</span> <span class="st">'Man'</span> <span class="kw">in</span> team <span class="cf">else</span> team</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> tm_team_name <span class="op">==</span> <span class="st">'Man_United'</span>: tm_team_name <span class="op">=</span> <span class="st">'Man United'</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> tm_team_name <span class="op">==</span> <span class="st">'Man_City'</span>: tm_team_name <span class="op">=</span> <span class="st">'Man City'</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>        pos_data.append({<span class="st">'season'</span>: season, <span class="st">'team_name'</span>: tm_team_name, <span class="st">'league_rank'</span>: rank})</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>rank_df <span class="op">=</span> pd.DataFrame(pos_data)</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. MERGE DATASETS</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="co"># We use an inner join so we only plot completed seasons (dropping 2024-2025)</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> pd.merge(inj_stats, rank_df, on<span class="op">=</span>[<span class="st">'team_name'</span>, <span class="st">'season'</span>], how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the correlation for an annotation</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>correlation <span class="op">=</span> plot_df[<span class="st">'avg_injuries'</span>].corr(plot_df[<span class="st">'league_rank'</span>])</span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. GENERATE PLOTLY GRAPH</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="co"># ==========================================</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a>    plot_df,</span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'avg_injuries'</span>,</span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'league_rank'</span>,</span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'team_name'</span>,</span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>[<span class="st">'season'</span>],</span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a>    trendline<span class="op">=</span><span class="st">'ols'</span>, </span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>    trendline_scope<span class="op">=</span><span class="st">'overall'</span>,</span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Does Squad Health Predict League Success? (Top 6: 2019 - 2024)'</span>,</span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a>        <span class="st">'avg_injuries'</span>: <span class="st">'Avg Gameweeks Missed (Per Player)'</span>,</span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a>        <span class="st">'league_rank'</span>: <span class="st">'Final League Position'</span>,</span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a>        <span class="st">'team_name'</span>: <span class="st">'Club'</span></span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a><span class="co"># --- CRITICAL VISUAL TWEAK ---</span></span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a><span class="co"># In sports, Rank #1 is the "Top". By reversing the Y-axis, the top of the graph </span></span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a><span class="co"># represents winning the league, making the visual intuitive to read.</span></span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(autorange<span class="op">=</span><span class="st">"reversed"</span>, tickmode<span class="op">=</span><span class="st">'linear'</span>, dtick<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Polish the visuals</span></span>
+<span id="cb24-79"><a href="#cb24-79" aria-hidden="true" tabindex="-1"></a>fig.update_traces(marker<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">14</span>, opacity<span class="op">=</span><span class="fl">0.85</span>, line<span class="op">=</span><span class="bu">dict</span>(width<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'DarkSlateGrey'</span>)))</span>
+<span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a>fig.update_layout(template<span class="op">=</span><span class="st">'plotly_white'</span>, title_x<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Correlation text box</span></span>
+<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a>stat_text <span class="op">=</span> <span class="ss">f"&lt;b&gt;Correlation (r):&lt;/b&gt; </span><span class="sc">{</span>correlation<span class="sc">:.2f}</span><span class="ss">&lt;br&gt;&lt;i&gt;(Positive = More injuries correlate with dropping lower down the table)&lt;/i&gt;"</span></span>
+<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a>fig.add_annotation(</span>
+<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">0.98</span>, y<span class="op">=</span><span class="fl">0.95</span>, xref<span class="op">=</span><span class="st">"paper"</span>, yref<span class="op">=</span><span class="st">"paper"</span>,</span>
+<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a>    text<span class="op">=</span>stat_text, showarrow<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb24-87"><a href="#cb24-87" aria-hidden="true" tabindex="-1"></a>    font<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">13</span>, color<span class="op">=</span><span class="st">"black"</span>), align<span class="op">=</span><span class="st">"right"</span>,</span>
+<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a>    bgcolor<span class="op">=</span><span class="st">"rgba(255,255,255,0.9)"</span>, bordercolor<span class="op">=</span><span class="st">"black"</span>, borderwidth<span class="op">=</span><span class="dv">1</span>, borderpad<span class="op">=</span><span class="dv">8</span></span>
+<span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-90"><a href="#cb24-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-91"><a href="#cb24-91" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+<p>A Pearson correlation of 0.36 is a moderate positive correlation. In the complex world of football—where referee decisions, tactical genius, billion-pound budgets, and pure luck all influence the final table—the fact that we can mathematically tie a noticeable chunk of league success purely to how empty the medical room is, is highly significant.</p>
+<p>Further external research proving the same point (league position correlated with injuries): “The ramifications of these injuries extend far beyond the localized physiological trauma experienced by the individual athlete. Player match availability exhibits a robust statistical correlation (<span class="math inline">\(r &gt; 0.85\)</span>) with overarching team success metrics, including final league standing, total points accumulated, and matches won. The financial magnitude of this epidemiological burden is equally staggering. Advanced predictive modeling and heuristic interpolation reveal that approximately 136 days lost to injury equates to the loss of one league point, while 271 days lost effectively costs a team one place in the final league table. When factoring in the amortization of transfer fees, baseline wage bills, and lost merit-based prize money, it is estimated that an EPL team loses an average of £45 million sterling per season solely due to injury-related decrements in performance.” (Gemini: sources: https://pmc.ncbi.nlm.nih.gov/articles/PMC9929604/ (injury patterns); https://bmjopensem.bmj.com/content/6/1/e000675 (Injury relationship with league position))</p>
+<p>WHAT WE KNOW SO FAR: - Number of gws missed by injuries are increasing over time</p>
+<p>Causes may be: - More severe injuries for a few players - More severe injuries for everyone - A broad group of players getting injured throughout the season</p>
+<ul>
+<li>Number of rest_days between matches are decreasing over time</li>
+<li>However, rest_time between games and gws missed per player are weakly correlated</li>
+<li>Minimising avg gws missed per player is essential to winning a prem title (almost all titles are won with gws missed &lt; 3)</li>
+</ul>
+<p>So now, what is causing the increase in injuries??</p>
+<p>Research highlights that a key metric to answer this question is ACWR:</p>
+<p>“The Acute:Chronic Workload Ratio (ACWR)The correlation between total match volume and injury is governed physiologically by load management metrics, most notably the Acute:Chronic Workload Ratio (ACWR). The ACWR is calculated by dividing the acute workload (typically the total distance covered or high-speed running executed in a trailing 1-week period) by the chronic workload (the 4-week rolling average of the acute workload).Spikes in the ACWR—which occur almost exclusively during congested fixture periods where acute match volume rapidly outpaces the player’s baseline chronic physiological fitness—are heavily correlated with muscle strains and joint trauma. A significant majority of hamstring injuries, for example, occur when the mean ACWR in the week prior to the injury exhibits a rapid, unmanaged fluctuation. This demonstrates a crucial nuance: it is not merely the total cumulative number of matches over a nine-month season that causes injury, but the density and rapid accumulation of match minutes within concentrated micro-cycles without proportional chronic adaptation.”</p>
+<p>Predicting injuries? See the important features and model metrics from this paper that helped predict player injuries <img src="viz build_files/figure-html/4cf83134-2-image.png" class="img-fluid" alt="image.png"> <img src="viz build_files/figure-html/4cf83134-1-image-2.png" class="img-fluid" alt="image-2.png"></p>
+<p>paper(https://www.mdpi.com/2076-3417/14/16/7217)</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
