@@ -1,19 +1,18 @@
 project:
   type: website
-  render:
-    - "*.qmd"               # This grabs your index.qmd and about.qmd
-    - "**/blog_post.ipynb"  # This ONLY grabs notebooks named exactly this in any subfolder
 
 website:
-  title: "Football Analytics"
+  title: "Gareth Edwards"
+  search: false
   navbar:
     right:
-      - about.qmd
-      - icon: github
-        href: https://github.com/Gareth1995
+      - href: index.qmd
+        text: Home
+      - href: blog.qmd
+        text: Articles
+      - href: cv.pdf
+        text: CV
 
 format:
   html:
-    theme: cosmo # You can change this to darkly, sketchy, litera, etc.
-    # css: styles.css
-    
+    theme: cosmo # Or whatever theme you are currently using

@@ -3,7 +3,7 @@ title: "What's the deal with all the injuries??"
 author: "Gareth Edwards"
 date: "2026-05-01"
 image: "injury_v_position.png" # This image will show up on the index page!
-categories: [Physio, Injury, Football]
+categories: [Football]
 format:
   html:
     code-fold: true # Allows readers to hide/show your Python code

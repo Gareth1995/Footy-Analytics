@@ -1,9 +1,24 @@
 ---
-title: "My Football Analytics Portfolio"
-listing:
-  contents: 
-    - "**/index.qmd"  # Looks in all folders, but ONLY grabs this exact filename
-  type: grid 
-  sort: "date desc"
-  categories: false
+title: "Gareth Edwards"
+image: profile3.png
+about:
+  template: jolla
+  image-width: 15em
+  image-shape: round
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/yourusername
+    - icon: github
+      text: GitHub
+      href: https://github.com/Gareth1995
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/yourusername
 ---
+
+Hi, I'm Gareth. Welcome to my data analytics portfolio. 
+
+I use Python, R, and open-source event data to analyze the beautiful game. Check out the **Articles** tab above to see my latest work, including deep dives into injury crises and tactical analyses of teams like Bayer Leverkusen.
+
+*(Add a picture of yourself, a summary of your skills, or links to your GitHub/Twitter here!)*

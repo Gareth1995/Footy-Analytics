@@ -2,7 +2,7 @@
 title: "Bayer Leverkusen Goal Analysis"
 author: "Gareth Edwards"
 date: "2024-07-23"
-categories: [Football, Passing, Bundesliga]
+categories: [Football]
 ---
 
 ```{r option-chunk, include=FALSE}
