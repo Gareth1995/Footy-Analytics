@@ -2,7 +2,7 @@
 title: "My Football Analytics Portfolio"
 listing:
   contents: 
-    - "**/blog_post.qmd"  # Looks in all folders, but ONLY grabs this exact filename
+    - "**/index.qmd"  # Looks in all folders, but ONLY grabs this exact filename
   type: grid 
   sort: "date desc"
   categories: false
