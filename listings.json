@@ -1,8 +1,9 @@
 [
   {
-    "listing": "/index.html",
+    "listing": "/blog.html",
     "items": [
-      "/Injury Viz/blog_post.html"
+      "/Injury Viz/post.html",
+      "/Bayer Leverkusen/post.html"
     ]
   }
 ]
