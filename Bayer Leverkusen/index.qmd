@@ -1,0 +1,309 @@
+---
+title: "Bayer Leverkusen Goal Analysis"
+author: "Gareth Edwards"
+date: "2024-07-23"
+categories: [Football, Passing, Bundesliga]
+---
+
+```{r option-chunk, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message = FALSE)
+
+```
+
+```{r load-libs, echo=FALSE}
+# load libraries
+library(ggplot2)
+library(dplyr)
+library(shiny)
+library(shinythemes)
+library(shinylive)
+library(SBpitch)
+library(ggrepel)
+library(ggsoccer)
+```
+
+```{r load-data}
+# load data
+leverkusen_23_24_events = readRDS('../data/leverkusen_23_24_events.rds')
+leverkusen_23_24_matches = readRDS('../data/leverkusen_23_24_matches.rds')
+```
+
+# Introduction
+
+The 2023/24 season of the Bundesliga will be remembered as one of the most extraordinary chapters in German football history. Bayer Leverkusen, a club often overshadowed by giants, etched their name in the annals of football with an unbeaten season. This remarkable achievement was a testament to the strategic acumen of their manager, the skill and determination of the players, and the unwavering support of their fans.
+
+Bayer Leverkusen has become the talk of the town in the world of football, and the question on everyone's minds now will be, "can they do it again?" My first question however, is why was no one able to beat them?
+
+I am a strong believer of "Attack wins you games, defense wins you titles" So, my first approach to beating a team would be to figure out how do we keep them from scoring!
+
+# My Focus
+
+My Focus in this blog is on the passing. If we are to keep it as simple as possible, we know that football is really about moving the ball and scoring a goal. If you can move the ball around well, you can score goals. On the other hand, if you know how a team moves the ball around, you can stop them from scoring goals.
+
+I have seen many analysts take an overall look at a teams passing and then develop passing networks based on heaps of passing data, most of which were sideways and backward passes. What I have decided to do is take a closer look, and zoom in on passing and passing sequences that lead to goals only.
+
+My first order of action, given that I haven't watched a Bayer Leverkusen match last season (little access to Bundesliga matches in South Africa), was to visualise all their goals for the 23/24 Bundesliga season. In the interactive visual below we can select a match and view all the unbroken passing sequences that lead to Leverkusen goals (Note: Some matches have no visualisation as there were no goals scored by Leverkusen in those matches).
+
+```{=html}
+<iframe src="https://g-edwards.shinyapps.io/bayer_leverkusen_pass_sequence/" data-external="1" width="800" height="800">
+</iframe>
+```
+You might be confused by the grey dotted line on the plots that is labelled as "Avg Direction of Play" on the legend. This is simply a line of best fit that goes through all the player locations in the passing sequence.
+
+When we look at some of these plots we can see a nice, abstracted view, of goals scored by Bayer Leverkusen, but, when the passing sequences become a bit more lengthy we may start to get lost in the dots and lines (see the goal scored at 46:16 in the RB Leipzig vs Bayer Leverkusen match).
+
+To, somewhat, alleviate this problem, one can use passing networks. Passing networks are a great visualisation as they contain a large amount of information in one plot. Now, often I have seen passing networks based on passing data from a whole match, or even a whole season, but this often includes many sideways and backwards passes that we might not be that interested about. Below we see a plot of a passing network plot for Bayern Leverkusen that takes into account all of their passes for the season, compared to a passing network that is based only on passes that lead to goals.
+
+```{r moves-before-goal}
+# Function to count passes before each goal
+moves_before_goal <- function(goal_index, events_df) {
+  goal_event <- events_df %>% filter(index == goal_index)
+  team_id <- goal_event$possession_team.name
+  
+  # Loop through events backwards from the goal event
+  event_list = list()
+  for (i in (goal_index):1) {
+    event <- events_df[i, ]
+    
+    # Stop if possession changes to a different team
+    if (event$possession_team.name != goal_event$possession_team.name |
+        !(event$type.name %in% c("Ball Receipt*",
+                                 "Pass",
+                                 "Carry",
+                                 "Pressure",
+                                 "Dribble",
+                                 "Dribbled Past",
+                                 "Shield",
+                                 "50/50",
+                                 "Shot")) |
+        event$pass.outcome.name %in% c("Out", "Incomplete")) {
+      break
+    }
+    
+    # add event to the list
+    event_list[[length(event_list) + 1]] <- event
+    
+  }
+  
+  # Convert the list to a dataframe
+  events_before_goal_df <- do.call(rbind, event_list)
+  return(events_before_goal_df)
+}
+```
+
+```{r all-moves-before-goal}
+# this method takes in a full event dataset from a given team and returns all moves in all goal sequences
+all_moves_before_goal <- function(team_event_data, team_name){
+  moves_before_all_goals = tibble()
+  for (i in leverkusen_23_24_matches$match_id) {
+    # print(i)
+    goal_vars = team_event_data %>% filter(match_id==i &
+                                           possession_team.name==team_name &
+                                           shot.outcome.name=="Goal" &
+                                           shot.type.name=="Open Play") %>%
+      select(index)
+    
+    
+    if(nrow(goal_vars) != 0) {
+      
+      for(x in goal_vars$index){
+        # print(paste0("goal index: ",x))
+        
+        # filter out the selected match
+        aMatch = team_event_data %>% filter(match_id==i)
+        # filter out dataset of moves before a selected goal
+        events_before_goal = moves_before_goal(x, aMatch)
+        
+        if (nrow(events_before_goal) != 0) {
+          # select only variables we need for the plot and arrange in ascending order
+          passes_before_goal = events_before_goal %>% select(c(team.name, index, type.name, player.name,
+                                                               pass.recipient.name, location, pass.end_location)) %>%
+            arrange(index)
+          
+          passes_before_goal[passes_before_goal == "NULL"] = NA # convert NULLs to NA
+          
+          moves_before_all_goals = rbind(moves_before_all_goals,passes_before_goal)
+        }
+      }
+    }
+  }
+  return(moves_before_all_goals)
+}
+```
+
+```{r avg-player-loc}
+# takes in an event dataframe and calculates average pass and receiving position (Threshold deals with number of touches)
+avg_player_locations = function(event_data, team_name, touch_threshold){
+  
+  # separate coordinate values
+  event_data <- event_data %>%
+    filter(type.name=="Pass" & team.name==team_name) %>%
+    mutate(x=unlist(lapply(location, function(v) as.numeric(v[1]))),
+           y=unlist(lapply(location, function(v) as.numeric(v[2]))),
+           pass_end_x=unlist(lapply(pass.end_location, function(v) ifelse(is.null(v), NA, as.numeric(v[1])))),
+           pass_end_y=unlist(lapply(pass.end_location, function(v) ifelse(is.null(v), NA, as.numeric(v[2])))))
+  
+  # build another dataset with all unique players and their average x and y positions
+  avg_pass_location = event_data %>%
+    group_by(player.name) %>%
+    mutate(avg_pass_x = mean(x),
+           avg_pass_y = mean(y),
+           passing_touches = n()) %>%
+    ungroup() %>%
+    group_by(pass.recipient.name) %>%
+    mutate(avg_rec_x = mean(pass_end_x),
+           avg_rec_y = mean(pass_end_y),
+           rec_touches = n()) %>%
+    ungroup()
+  
+  # average passing positions
+  avg_passes = avg_pass_location %>%
+    select(player.name, avg_pass_x, avg_pass_y, passing_touches) %>%
+    distinct()
+  
+  # average receiving positions
+  avg_rec = avg_pass_location %>%
+    select(pass.recipient.name, avg_rec_x, avg_rec_y, rec_touches) %>%
+    distinct()
+  
+  # average passing and receiving positions
+  player_locations = avg_passes %>%
+    left_join(avg_rec, by=join_by(player.name==pass.recipient.name)) %>%
+    group_by(player.name) %>%
+    mutate(avg_x = mean(c(avg_pass_x, avg_rec_x)),
+           avg_y = mean(c(avg_pass_y, avg_rec_y)),
+           num_touches = sum(c(passing_touches, rec_touches))) %>%
+    filter(passing_touches >= touch_threshold) %>%
+    mutate(player.surname = sub(".*\\s", "", player.name))
+  
+  return(player_locations)
+  
+}
+```
+
+```{r passing-links}
+# build another dataset with pass links (group by player.name and recipient.name) and their average x y locations
+passing_links <- function(event_data, team_name, avg_player_positions, link_freq){
+  
+  links <- event_data %>%
+    filter(team.name == team_name, type.name=="Pass") %>%
+    left_join(avg_player_positions, by = c("player.name" = "player.name")) %>%
+    rename(passer_x = avg_x, passer_y = avg_y) %>%
+    left_join(avg_player_positions, by = c("pass.recipient.name" = "player.name")) %>%
+    rename(rec_x = avg_x, rec_y = avg_y) %>%
+    select(player.name, pass.recipient.name, passer_x, passer_y, rec_x, rec_y) %>%
+    group_by(player.name, pass.recipient.name) %>%
+    mutate(n=n()) %>%
+    arrange(n) %>%
+    distinct()
+  
+  return(links)
+}
+```
+
+```{r passing-links-plot}
+# plot passing network
+plot_passnetwork <- function(player_locations, plinks, threshold, title){
+  pass_network_plot = create_Pitch() +
+    geom_segment(data = plinks, aes(x = passer_x, y = passer_y, xend = rec_x, yend = rec_y, size = n, color=ifelse(n<threshold,'red','blue'))) +
+    geom_point(data = player_locations, aes(x = avg_x, y = avg_y, size = passing_touches), color='red') +
+    
+    geom_text_repel(data = player_locations, aes(x = avg_x, y = avg_y, label = paste0(player.surname,":",passing_touches)), 
+                    size = 4, color = "black", box.padding = 0.2, point.padding = 0,
+                    segment.color = "grey", segment.size = 0.5) + 
+    
+    scale_size_continuous(range = c(0, 7)) +  # Set the range of sizes
+    
+    scale_y_reverse() +
+    
+    theme_pitch() +
+    ggtitle(title,
+            subtitle = "Player: No. Passes") +
+    theme(plot.title = element_text(size = 20, face = "bold"),
+          plot.subtitle = element_text(size = 10, face = "bold"),
+          legend.title = element_text(size = 14),
+          legend.text = element_text(size = 12),
+          legend.position = "none")
+  
+  pass_network_plot
+}
+```
+
+```{r pass-network-all-passes}
+#| layout-ncol: 2
+#| column: page
+#| output: true
+#| fig-width: 10
+#| fig-height: 8
+
+# network for all passes
+player_locations = avg_player_locations(leverkusen_23_24_events, 'Bayer Leverkusen', 200) # players with at least 200 touches
+plinks = passing_links(leverkusen_23_24_events, 'Bayer Leverkusen', player_locations)
+
+plot_passnetwork(player_locations, plinks, 100, "Passing Network for 23/24 Bundesliga Season") # color passing links that appear at least 100 times
+
+# network for goal scoring passes
+all_moves = all_moves_before_goal(leverkusen_23_24_events, 'Bayer Leverkusen')
+player_locations = avg_player_locations(all_moves, 'Bayer Leverkusen', 5)
+plinks = passing_links(all_moves, 'Bayer Leverkusen', player_locations)
+
+plot_passnetwork(player_locations, plinks, 4, "Passing Network of Passes that Lead to Goals")
+```
+
+```{r centrality-index-1, results='hide'}
+
+denom = (nrow(player_locations)-1) * sum(player_locations$passing_touches)
+
+total_passes_to_top_player = max(player_locations$rec_touches)
+
+# sum(total passses to dominant player - total passes to every other player)
+player_locations = player_locations %>%
+  mutate(dominant_player_minus_others = total_passes_to_top_player - passing_touches)
+
+numer = sum(player_locations$dominant_player_minus_others)
+
+centrality_index = numer/denom
+
+print(denom)
+print(numer)
+print(centrality_index)
+```
+
+One of the main aspects we look at when it comes to passing networks is the centrality index (C). There are many ways to calculate centrality. In this blog we have used the following calculation:
+
+$C=\frac{\sum_{i=1}^{N} (P_* \cdot P_i)}{(N-1) \sum_{i=1}^{N} p_i}$
+
+Centrality ranges from the values 0 to 1 and is a measure of how diverse or not diverse a team was with their passing. If we have a team with a centrality index of 100% (or 1) it means that there was only one person that everyone in that team passed to and that one person distributed the ball to everyone else. Whereas a centrality index values closer to 0 means that everyone in the team share the ball equally and there is not one person that stands out. This means teams with a centrality index closer to one is very predictable with their passes, whereas a team with a centrality index closer to zero is very unpredictable with their passes.
+
+Bayer Leverkusen had a centrality index of 7% for both their passing network over the whole season and their passing network for goals only. A centrality index of 7% means that goals came from all over the pitch and they were a difficult team to predict.
+
+The player data shows it! Bayer Leverkusen was scoring goals from everywhere, and it seems it was very difficult to tie them down. A striker, attacking mid, left back and right back make up their top four scorers! Leverkusen had multiple avenues to goal.
+
+| Player            | Goals | Assists |
+|-------------------|-------|---------|
+| Victor Boniface   | 14    | 8       |
+| Florian Wirtz     | 11    | 11      |
+| Alex Grimaldo     | 10    | 13      |
+| Jeremie Frimpong  | 9     | 7       |
+| Patrik Schik      | 7     | \-      |
+| Jonas Hofmann     | 5     | 7       |
+| Nathan Tella      | 5     | 2       |
+| Amine Adli        | 4     | 4       |
+| Exequiel Palacios | 4     | 5       |
+| Jonathan Tah      | 4     | 1       |
+
+: <b>Bayer Leverkusen Top Goal Scorers</b>
+
+As decentralised as Leverkusen might seem, I can't help but notice the change of shape between the average position of players compared to their goal scoring position. Some players, like Xhaka, Boniface and Hoffmann don't have a drastic change in average position. But if we are to look at Wirtz, Grimaldo and Reyna, we see that they seem to be drawn together during build ups to goal. Based on the goal scoring outcomes, we see that Leverkusen favoured their left-side to an extent. One idea to stopping Leverkusen might be to lock down the left side and be extra careful of the Reyna, Grimaldo and Wirtz triangle.
+
+Another interesting point I notice is the link between Jonathan Tah and Granit Xhaka. There were 13 passes between them in Leverkusen's build up. Compare this with the Writz - Grimaldo passing link that took place 12 times within goal sequences, or the Writz - Xhaka passing link that took place 10 times. Now, again, this is a great example of Leverkusen's decentralised nature, but it does show us something interesting. Perhaps blocking some passes between Tah and Xhaka is more important than one might think.
+
+In the modern game center backs have become less brute and more brains and the example of Jonathan Tah here is testimant to that. Going forward, if the center back is able to find the midfield pivot with a good pass, you can now successfully turn defense into attack. It is pointless if Xhaka finds himself with space in the middle of the field but neither of the center backs can find him.
+
+Then adding on this finding, we see that Tapsoba doesn't possess the same ability to find the midfielders as Tah does. Instead, Tapsoba often hands the ball over to Tah to get the ball moving forward it seems. My thinking here, if you want to quell the Leverkusen attack from the root, block passing lines between Tah and Xhaka and allow Tapsoba to have possession of the ball without presenting him with the Tah pass. This is likely going to make Leverkusen using a passing sequence that is not usually what they would use if they were building up to a goal.
+
+# Conclusion
+
+These passing networks showed why Bayer Leverkusen was so difficult to stop. Their decentralised style of play and the talent they possessed in each area of the pitch was a formidable opponent to all. But we do still see some patterns: Some clear player shifts that lead to goals and defenders potentially forming the root of the goal scoring passing sequence. Food for thought for any defenders and managers rearing up to face the defending Bundesliga champions next season.
