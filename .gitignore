@@ -16,6 +16,7 @@ _site/
 
 # Data and Downloads
 **/raw data/
+**/data/
 **/processed data/
 downloaded_files/
 
@@ -25,3 +26,5 @@ downloaded_files/
 # OS System Files
 .DS_Store
 Thumbs.db
+
+.vscode/

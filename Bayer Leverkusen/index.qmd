@@ -26,8 +26,8 @@ library(ggsoccer)
 
 ```{r load-data}
 # load data
-leverkusen_23_24_events = readRDS('../data/leverkusen_23_24_events.rds')
-leverkusen_23_24_matches = readRDS('../data/leverkusen_23_24_matches.rds')
+leverkusen_23_24_events = readRDS('data/leverkusen_23_24_events.rds')
+leverkusen_23_24_matches = readRDS('data/leverkusen_23_24_matches.rds')
 ```
 
 # Introduction
