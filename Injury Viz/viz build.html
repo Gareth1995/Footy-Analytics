@@ -184,11 +184,11 @@ window.Quarto = {
 </header>
 
 
-<div id="8fffeb02" class="cell" data-execution_count="1">
+<div id="8fffeb02" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="eba9fd5e" class="cell" data-execution_count="2">
+<div id="eba9fd5e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>master_prem_fixtures <span class="op">=</span> pd.read_csv(<span class="st">'processed data</span><span class="er">\</span><span class="st">master_premier_league_fixtures.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>master_absences <span class="op">=</span> pd.read_csv(<span class="st">'processed data</span><span class="er">\</span><span class="st">master_absence_long.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -196,9 +196,9 @@ window.Quarto = {
 &lt;&gt;:2: SyntaxWarning: invalid escape sequence '\m'
 &lt;&gt;:1: SyntaxWarning: invalid escape sequence '\m'
 &lt;&gt;:2: SyntaxWarning: invalid escape sequence '\m'
-C:\Users\GARETHE\AppData\Local\Temp\ipykernel_22088\2495065142.py:1: SyntaxWarning: invalid escape sequence '\m'
+C:\Users\GARETHE\AppData\Local\Temp\ipykernel_36276\2495065142.py:1: SyntaxWarning: invalid escape sequence '\m'
   master_prem_fixtures = pd.read_csv('processed data\master_premier_league_fixtures.csv')
-C:\Users\GARETHE\AppData\Local\Temp\ipykernel_22088\2495065142.py:2: SyntaxWarning: invalid escape sequence '\m'
+C:\Users\GARETHE\AppData\Local\Temp\ipykernel_36276\2495065142.py:2: SyntaxWarning: invalid escape sequence '\m'
   master_absences = pd.read_csv('processed data\master_absence_long.csv')</code></pre>
 </div>
 </div>
@@ -745,7 +745,7 @@ C:\Users\GARETHE\AppData\Local\Temp\ipykernel_22088\2495065142.py:2: SyntaxWarni
 </section>
 <section id="how-strongly-does-average-gameweeks-missed-per-player-influence-whether-a-team-wins-the-league-or-not" class="level3">
 <h3 class="anchored" data-anchor-id="how-strongly-does-average-gameweeks-missed-per-player-influence-whether-a-team-wins-the-league-or-not">How strongly does average gameweeks missed per player influence whether a team wins the league or not</h3>
-<div id="98a47f0d" class="cell" data-execution_count="15">
+<div id="98a47f0d" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -828,15 +828,13 @@ C:\Users\GARETHE\AppData\Local\Temp\ipykernel_22088\2495065142.py:2: SyntaxWarni
 <span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a>fig.update_layout(template<span class="op">=</span><span class="st">'plotly_white'</span>, title_x<span class="op">=</span><span class="fl">0.5</span>)</span>
 <span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Correlation text box</span></span>
-<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a>stat_text <span class="op">=</span> <span class="ss">f"&lt;b&gt;Correlation (r):&lt;/b&gt; </span><span class="sc">{</span>correlation<span class="sc">:.2f}</span><span class="ss">&lt;br&gt;&lt;i&gt;(Positive = More injuries correlate with dropping lower down the table)&lt;/i&gt;"</span></span>
-<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a>fig.add_annotation(</span>
-<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">0.98</span>, y<span class="op">=</span><span class="fl">0.95</span>, xref<span class="op">=</span><span class="st">"paper"</span>, yref<span class="op">=</span><span class="st">"paper"</span>,</span>
-<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a>    text<span class="op">=</span>stat_text, showarrow<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb24-87"><a href="#cb24-87" aria-hidden="true" tabindex="-1"></a>    font<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">13</span>, color<span class="op">=</span><span class="st">"black"</span>), align<span class="op">=</span><span class="st">"right"</span>,</span>
-<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a>    bgcolor<span class="op">=</span><span class="st">"rgba(255,255,255,0.9)"</span>, bordercolor<span class="op">=</span><span class="st">"black"</span>, borderwidth<span class="op">=</span><span class="dv">1</span>, borderpad<span class="op">=</span><span class="dv">8</span></span>
-<span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-90"><a href="#cb24-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-91"><a href="#cb24-91" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a><span class="co"># fig.add_annotation(</span></span>
+<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a><span class="co">#     # x=0.98, y=0.95, xref="paper", yref="paper",</span></span>
+<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a><span class="co">#     font=dict(size=13, color="black"), align="right"</span></span>
+<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a><span class="co">#     # bgcolor="rgba(255,255,255,0.9)", bordercolor="black", borderwidth=1, borderpad=8</span></span>
+<span id="cb24-87"><a href="#cb24-87" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
 </div>
