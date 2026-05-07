@@ -2,24 +2,23 @@
 title: "What's the deal with all the injuries??"
 author: "Gareth Edwards"
 date: "2026-05-01"
+bibliography: bibliography.bib
 image: "injury_v_position.png" # This image will show up on the index page!
 categories: [Football]
+execute:
+  echo: false
 format:
   html:
-    code-fold: true # Allows readers to hide/show your Python code
+    code-fold: false # Allows readers to hide/show your Python code
 ---
 
-For all football fans out there, I think we are all thinking the same thing, "What is up with all the injuries this season??" The 2025/2026 Premier League season has produced more than x player injuries which has lead to an average amount of games missed per player as x. As an Arsenal fan I've built up hope that this year may be the year we win a big title, but these injuries are rocking us. Not as hard as they are rocking the probably soon-to-be-relegated Tottenham though. In fact, Arteta may be exceptionally over achieving right now. Here's why!
+Have you ever watched a movie where the main character ends up dying? This is how I feel everytime my favorite football team plays a match and I see a player down with injury. I hold my breath hoping he's just being dramatic and that he'll get up and keep going, but then I see the grimace, the looks to the bench and then the fateful, universal hand gesture that says "take me off coach". I have been punched in the gut, a lump forms in my throat and I question why the world has to be such a dark place.
 
-Injuries cost a team points! Studies have shown that ...
+Injuries cost a team points! Studies have shown that player match availability exhibits a robust statistical correlation ($r > 0.85$) with overarching team success metrics, including final league standing, total points accumulated, and matches won. Advanced predictive modeling and heuristic interpolation reveal that approximately 136 days lost to injury equates to the loss of one league point, while 271 days lost effectively costs a team one place in the final league table [@eliakim2020estimation].  
 
-The worst part about this all is that we are seeing a clear increase in the amount of games a player misses, on average, in the Premier League due to injury:
+Some independent data scraping and visualisation has painted a similar picture. Check out the correlation between average gameweeks missed per player and the final league position of their team. This visual takes into account the "top 6" teams of the EPL. There is a striking correlation between the two variables (r = 0.32). The plot alone suggests that if a top 6 EPL team manage to keep their average-gameweeks-missed-per-player rate to below 3 they stand a very good chance of finishing in the top 3 (bar a few outliers). The lower a team's average gameweeks missed per player, the higher the team is expected to finish at the end of the season. 
 
 ```{python}
-#| warning: false
-#| message: false
-#| column: page
-
 import pandas as pd
 from prophet import Prophet
 from prophet.plot import plot_plotly
@@ -27,6 +26,109 @@ import plotly.express as px
 
 master_prem_fixtures = pd.read_csv('processed data/master_premier_league_fixtures.csv')
 master_absences = pd.read_csv('processed data/master_absence_long.csv')
+
+```
+
+Additionally, based off the same study, there is a hefty financial impact on an EPL club from player injuries too (as one would expect). When factoring in the amortization of transfer fees, baseline wage bills, and lost merit-based prize money, it is estimated that an EPL team loses an average of £45 million sterling per season solely due to injury-related decrements in performance.
+
+```{python}
+
+# (Assuming master_absences is loaded)
+
+# ==========================================
+# 1. CALCULATE AVG INJURIES PER PLAYER
+# ==========================================
+squad_sizes = master_absences.groupby(['team_name', 'season'])['player_name'].nunique().reset_index(name='squad_size')
+
+injuries_df = master_absences[master_absences['player_status'] == 'Absence/injury']
+injury_counts = injuries_df.groupby(['team_name', 'season']).size().reset_index(name='total_injuries')
+
+inj_stats = pd.merge(squad_sizes, injury_counts, on=['team_name', 'season'], how='left')
+inj_stats['total_injuries'] = inj_stats['total_injuries'].fillna(0)
+inj_stats['avg_injuries'] = (inj_stats['total_injuries'] / inj_stats['squad_size']).round(2)
+
+# ==========================================
+# 2. INJECT ACTUAL LEAGUE FINISHING POSITIONS
+# ==========================================
+# Historical league positions for the Top 6 teams (19/20 through 23/24)
+# Note: 24/25 is excluded as the season is not finished yet.
+league_positions = {
+    '2019-2020': {'Liverpool': 1, 'Man City': 2, 'Man United': 3, 'Chelsea': 4, 'Tottenham': 6, 'Arsenal': 8},
+    '2020-2021': {'Man City': 1, 'Man United': 2, 'Liverpool': 3, 'Chelsea': 4, 'Tottenham': 7, 'Arsenal': 8},
+    '2021-2022': {'Man City': 1, 'Liverpool': 2, 'Chelsea': 3, 'Tottenham': 4, 'Arsenal': 5, 'Man United': 6},
+    '2022-2023': {'Man City': 1, 'Arsenal': 2, 'Man United': 3, 'Liverpool': 5, 'Tottenham': 8, 'Chelsea': 12},
+    '2023-2024': {'Man City': 1, 'Arsenal': 2, 'Liverpool': 3, 'Tottenham': 5, 'Chelsea': 6, 'Man United': 8},
+    '2024-2025': {'Liverpool': 1, 'Arsenal': 2, 'Man City': 3, 'Chelsea': 4, 'Man United': 15, 'Tottenham': 17}
+}
+
+# Flatten the dictionary into a DataFrame for merging
+pos_data = []
+for season, teams in league_positions.items():
+    for team, rank in teams.items():
+        # Standardize the team name to match our Transfermarkt formatting
+        tm_team_name = team.replace(' ', '_').title() if 'Man' in team else team
+        if tm_team_name == 'Man_United': tm_team_name = 'Man United'
+        if tm_team_name == 'Man_City': tm_team_name = 'Man City'
+        
+        pos_data.append({'season': season, 'team_name': tm_team_name, 'league_rank': rank})
+
+rank_df = pd.DataFrame(pos_data)
+
+# ==========================================
+# 3. MERGE DATASETS
+# ==========================================
+# We use an inner join so we only plot completed seasons (dropping 2024-2025)
+plot_df = pd.merge(inj_stats, rank_df, on=['team_name', 'season'], how='inner')
+
+# Calculate the correlation for an annotation
+correlation = plot_df['avg_injuries'].corr(plot_df['league_rank'])
+
+# ==========================================
+# 4. GENERATE PLOTLY GRAPH
+# ==========================================
+fig = px.scatter(
+    plot_df,
+    x='avg_injuries',
+    y='league_rank',
+    color='team_name',
+    hover_data=['season'],
+    trendline='ols', 
+    trendline_scope='overall',
+    title='Does Squad Health Predict League Success? (Top 6: 2019 - 2024)',
+    labels={
+        'avg_injuries': 'Avg Gameweeks Missed (Per Player)',
+        'league_rank': 'Final League Position',
+        'team_name': 'Club'
+    }
+)
+
+# --- CRITICAL VISUAL TWEAK ---
+# In sports, Rank #1 is the "Top". By reversing the Y-axis, the top of the graph 
+# represents winning the league, making the visual intuitive to read.
+fig.update_yaxes(autorange="reversed", tickmode='linear', dtick=1)
+
+# Polish the visuals
+fig.update_traces(marker=dict(size=14, opacity=0.85, line=dict(width=1, color='DarkSlateGrey')))
+fig.update_layout(template='plotly_white', title_x=0.5)
+
+# Add Correlation text box
+# fig.add_annotation(
+#     x=0.98, y=0.95, xref="paper", yref="paper",
+#     font=dict(size=13, color="black"), align="right",
+#     bgcolor="rgba(255,255,255,0.9)", bordercolor="black", borderwidth=1, borderpad=8
+# )
+
+fig
+```
+
+\
+
+We have clear evidence that injuries, and especially matches missed per player in the EPL have an immense impact on their team's performance and what's worse is that there is a clear trend that average gameweeks missed per player are increasing over time. See the plot below.
+
+```{python}
+#| warning: false
+#| message: false
+#| column: page
 
 # ==========================================
 # 1. CALCULATE OVERALL AVERAGES PER SEASON
@@ -94,3 +196,12 @@ fig.update_xaxes(
 # 💥 The ultimate fix: Just 'fig' so Quarto handles the rendering natively!
 fig
 ```
+
+\
+
+Now the real question is, "What's the deal with all the injuries??" With rising injury levels in the EPL like this we are looking at an evolving game where it won't only be set piece tactics, press intensity, possession, attack and defence tactics that wins the league, but in fact, keeping players fit may become the key to winning the league in a climate of ever increasing injuries.
+
+Now two key questions come to mind when analysing this data. Firstly, what is causing these injuries? and secondly, How does a team stem the flow of this steady increase of injuries to a point where they give themselves a strong competitive advantage? I will use academic articles and some independently sourced data to answer these questions.
+
+#### What is causing these injuries?
+
