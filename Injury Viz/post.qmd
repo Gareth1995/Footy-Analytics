@@ -10,6 +10,10 @@ execute:
 format:
   html:
     code-fold: false # Allows readers to hide/show your Python code
+include-in-header:
+  text: |
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 ---
 
 Have you ever watched a movie where the main character ends up dying? This is how I feel everytime my favorite football team plays a match and I see a player down with injury. I hold my breath hoping he's just being dramatic and that he'll get up and keep going, but then I see the grimace, the looks to the bench and then the fateful, universal hand gesture that says "take me off coach". I have been punched in the gut, a lump forms in my throat and I question why the world has to be such a dark place.
@@ -193,7 +197,6 @@ fig.update_xaxes(
     rangeselector=None
 )
 
-# 💥 The ultimate fix: Just 'fig' so Quarto handles the rendering natively!
 fig
 ```
 
@@ -205,3 +208,202 @@ Now two key questions come to mind when analysing this data. Firstly, what is ca
 
 #### What is causing these injuries?
 
+Match congestion
+The most talked about issue amongst managers, pundits and fans is the increased number of matches that is leading to player injuries. There is research that illustrates that this does lead to increased injuries, but it is not necessarily the number of matches played in a season that is the issue, but rather the congestion that positively correlates to higher injury rate.
+
+Fixture congestion is generally defined within the literature as a competitive schedule requiring teams to compete with $\leq 4$ days of physiological recovery between matches. As much as we would like to blame match congestion on increased injury, the research doesn't show the relationship as we expect.
+
+Firstly, the research regarding the relationship between player injury rate and match congestion is surprisingly low. A paper that consolidated around 8 papers on this topic stated the following:
+
+>"A total of eight articles were included in the review. Five studies identified that congested fixture schedules expose players to increased match injury incidence, although layoff duration was typically lower during congested periods. Two studies identified that training and overall injury incidence were higher during congested periods, with another study identifying a lower training injury incidence during congested periods." [@Page2023FixtureCongestionInjury]
+
+So while injury rate may increase during congested match periods, the lay off times are relatively low. This means that while match congestion does lead to an increase in injury rate, it doesn't necessarily lead to an increase in average games missed per player over time.
+
+Research notes some key factors that relate to injury severity (where a severe injury means a player is out for at least 28 days, therfore missing more match days). Some of these factors are obvious some not. The 4 key factors are as follows:
+
+- **Previous injury history:** Players with previous injuries tend to get injured again as the scar tissue that forms during healing is less elastic and weaker than native muscle tissue.
+
+- **Acute:Chronic Workload Ratio (ACWR) Spikes:** Calculated by omparing what a player has done in the last 7 days (Acute load) to what they have averaged over the last 28 days (Chronic load). For example, when the ACWR exceeds $1.5$ (meaning the player is doing 50% more high-intensity work this week than their body is conditioned for). Injuries occurring when a player is in this red zone tend to be of much higher severity because the tissue fails catastrophically under unfamiliar peak tension, rather than just sustaining a micro-tear.
+
+- **Accumulated Neuromuscular Fatigue:** Sports scientists don't just look at how much a player runs; they test how well a player's nervous system is firing.
+
+- **Age and Tissue Degeneration:** The older a player the easier it is to sustain injuries (typically over the age of 28-30 is where the cellular turnover slows down, tendon stiffness changes, and baseline systemic inflammation often increases.)
+
+The ACWR factor stands out to me most as this is a very trackable statistic that could potentially be used to monitor when a player is at high risk of injury, but also to build their workload up at a stable rate such that the average workload is at a constantly high level which will lead to less weekly activity spikes. A look at the injury distribution below shows us how necessary it is to put methods in place to prevent the non-contact soft tissue injuries as these are the injuries that are increasing over time [@Page2023FixtureCongestionInjury]. This becomes even more important as we see the landscape of football becoming more intense over time too. [https://bjsm.bmj.com/content/59/23/1643, https://pmc.ncbi.nlm.nih.gov/articles/PMC13002794/] - get citations for this 
+
+-- fix html 
+
+<section id="injury-distribution" style="
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 2rem;
+  padding: 3rem 2.5rem;
+  margin: 3rem 0;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+">
+
+  <div style="max-width: 800px; margin: 0 auto;">
+    <h2 style="
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+      letter-spacing: -0.02em;
+    ">
+      Where Severe Injuries Occur
+    </h2>
+    <p style="
+      color: #94a3b8;
+      text-align: center;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 680px;
+      margin: 0 auto 3rem auto;
+    ">
+      Between 60% and 80% of severe football injuries occur in the lower extremities,
+      with the thigh and knee accounting for the largest share.
+    </p>
+    <!-- Thigh -->
+    <div style="margin-bottom: 1.75rem;">
+      <div style="
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      ">
+        <span>Thigh</span>
+        <span style="color: #f472b6;">30%</span>
+      </div>
+      <div style="
+        height: 12px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      ">
+        <div style="
+          width: 30%;
+          height: 100%;
+          background: linear-gradient(90deg, #ec4899, #f472b6);
+          border-radius: 999px;
+        "></div>
+      </div>
+    </div>
+    <!-- Knee -->
+    <div style="margin-bottom: 1.75rem;">
+      <div style="
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      ">
+        <span>Knee</span>
+        <span style="color: #60a5fa;">29%</span>
+      </div>
+      <div style="
+        height: 12px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      ">
+        <div style="
+          width: 29%;
+          height: 100%;
+          background: linear-gradient(90deg, #3b82f6, #60a5fa);
+          border-radius: 999px;
+        "></div>
+      </div>
+    </div>
+    <!-- Ankle -->
+    <div style="margin-bottom: 1.75rem;">
+      <div style="
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      ">
+        <span>Ankle</span>
+        <span style="color: #34d399;">11–23%</span>
+      </div>
+      <div style="
+        height: 12px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      ">
+        <div style="
+          width: 17%;
+          height: 100%;
+          background: linear-gradient(90deg, #10b981, #34d399);
+          border-radius: 999px;
+        "></div>
+      </div>
+    </div>
+    <!-- Groin -->
+    <div style="margin-bottom: 2.5rem;">
+      <div style="
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      ">
+        <span>Groin</span>
+        <span style="color: #fbbf24;">8–18%</span>
+      </div>
+      <div style="
+        height: 12px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      ">
+        <div style="
+          width: 13%;
+          height: 100%;
+          background: linear-gradient(90deg, #f59e0b, #fbbf24);
+          border-radius: 999px;
+        "></div>
+      </div>
+    </div>
+    <!-- Lower Extremities Highlight -->
+    <div style="
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      text-align: center;
+    ">
+      <div style="
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+      ">
+        60–80%
+      </div>
+      <div style="
+        color: #94a3b8;
+        font-size: 1rem;
+      ">
+        of all severe injuries occur in the lower extremities
+      </div>
+    </div>
+  </div>
+</section>
+
+ACWR
+Match intensity
+Other important variables based on a prediction model
+
+
+#### How does a team overcome the growing injury crisis
+
+Adam Renshaw
+Dave Rennie and Leicester City's Premier League Triumph (2015-2016)
+The OFI Crete FC "Four-Pillar" Rehabilitation Strategy
+
+Research highlights that a key metric to answer this question is ACWR:
+
+The Acute:Chronic Workload Ratio (ACWR), defined as the correlation between total match volume and injury is governed physiologically by load management metrics, most notably the Acute:Chronic Workload Ratio (ACWR). The ACWR is calculated by dividing the acute workload (typically the total distance covered or high-speed running executed in a trailing 1-week period) by the chronic workload (the 4-week rolling average of the acute workload).Spikes in the ACWR—which occur almost exclusively during congested fixture periods where acute match volume rapidly outpaces the player's baseline chronic physiological fitness—are heavily correlated with muscle strains and joint trauma. A significant majority of hamstring injuries, for example, occur when the mean ACWR in the week prior to the injury exhibits a rapid, unmanaged fluctuation. This demonstrates a crucial nuance: it is not merely the total cumulative number of matches over a nine-month season that causes injury, but the density and rapid accumulation of match minutes within concentrated micro-cycles without proportional chronic adaptation."
+
+![image.png](attachment:image.png)
