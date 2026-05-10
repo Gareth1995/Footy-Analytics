@@ -10,10 +10,6 @@ execute:
 format:
   html:
     code-fold: false # Allows readers to hide/show your Python code
-include-in-header:
-  text: |
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 ---
 
 Have you ever watched a movie where the main character ends up dying? This is how I feel everytime my favorite football team plays a match and I see a player down with injury. I hold my breath hoping he's just being dramatic and that he'll get up and keep going, but then I see the grimace, the looks to the bench and then the fateful, universal hand gesture that says "take me off coach". I have been punched in the gut, a lump forms in my throat and I question why the world has to be such a dark place.
@@ -229,181 +225,189 @@ Research notes some key factors that relate to injury severity (where a severe i
 
 - **Age and Tissue Degeneration:** The older a player the easier it is to sustain injuries (typically over the age of 28-30 is where the cellular turnover slows down, tendon stiffness changes, and baseline systemic inflammation often increases.)
 
-The ACWR factor stands out to me most as this is a very trackable statistic that could potentially be used to monitor when a player is at high risk of injury, but also to build their workload up at a stable rate such that the average workload is at a constantly high level which will lead to less weekly activity spikes. A look at the injury distribution below shows us how necessary it is to put methods in place to prevent the non-contact soft tissue injuries as these are the injuries that are increasing over time [@Page2023FixtureCongestionInjury]. This becomes even more important as we see the landscape of football becoming more intense over time too. [https://bjsm.bmj.com/content/59/23/1643, https://pmc.ncbi.nlm.nih.gov/articles/PMC13002794/] - get citations for this 
+The ACWR factor stands out to me most as this is a very trackable statistic that could potentially be used to monitor when a player is at high risk of injury, but also to build their workload up at a stable rate such that the average workload is at a constantly high level which will lead to less weekly activity spikes. A look at the injury distribution below shows us how necessary it is to put methods in place to prevent the non-contact soft tissue injuries as these are the injuries that are increasing over time [@Page2023FixtureCongestionInjury]. This becomes even more important as we see the landscape of football becoming more intense over time too. [@Allen1643, @Xie2026HighSpeedRunningInjury]
 
--- fix html 
+```{=html}
+<style>
+  .anatomy-section {
+    background: #111827;
+    border-radius: 2rem;
+    padding: 3rem 2rem;
+    margin: 1rem 0;
+  }
+  .anatomy-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+  }
+  .anatomy-header h2 {
+    font-size: 22px;
+    font-weight: 500;
+    color: white;
+    margin: 0 0 0.75rem;
+  }
+  .anatomy-header p {
+    font-size: 15px;
+    color: #9ca3af;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .anatomy-body {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    min-width: 220px;
+    max-width: 340px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .legend-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+    margin: 0 0 2px;
+  }
+  .legend-desc {
+    font-size: 13px;
+    color: #9ca3af;
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>
 
-<section id="injury-distribution" style="
-  background: #0f172a;
-  color: #ffffff;
-  border-radius: 2rem;
-  padding: 3rem 2.5rem;
-  margin: 3rem 0;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.35);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-">
-
-  <div style="max-width: 800px; margin: 0 auto;">
-    <h2 style="
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      text-align: center;
-      letter-spacing: -0.02em;
-    ">
-      Where Severe Injuries Occur
-    </h2>
-    <p style="
-      color: #94a3b8;
-      text-align: center;
-      font-size: 1.05rem;
-      line-height: 1.8;
-      max-width: 680px;
-      margin: 0 auto 3rem auto;
-    ">
-      Between 60% and 80% of severe football injuries occur in the lower extremities,
-      with the thigh and knee accounting for the largest share.
-    </p>
-    <!-- Thigh -->
-    <div style="margin-bottom: 1.75rem;">
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-      ">
-        <span>Thigh</span>
-        <span style="color: #f472b6;">30%</span>
+<section class="anatomy-section">
+  <div class="anatomy-header">
+    <h2>The anatomy of the breakdown</h2>
+    <p>To understand how to prevent injuries, we must categorize them. The data shows that collision injuries are static; the massive increase lies in non-contact soft tissue injuries, directly linked to high-speed running and inadequate recovery.</p>
+  </div>
+  <div class="anatomy-body">
+    <svg id="donut" width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#e91e8c;"></div>
+        <div>
+          <p class="legend-label">Hamstring &amp; Groin (45%)</p>
+          <p class="legend-desc">Making up nearly half of all injuries due to eccentric loads during deceleration.</p>
+        </div>
       </div>
-      <div style="
-        height: 12px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 999px;
-        overflow: hidden;
-      ">
-        <div style="
-          width: 30%;
-          height: 100%;
-          background: linear-gradient(90deg, #ec4899, #f472b6);
-          border-radius: 999px;
-        "></div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#2979ff;"></div>
+        <div>
+          <p class="legend-label">Knee &amp; Ankle Ligament (25%)</p>
+          <p class="legend-desc">Fatigued muscles fail to act as shock absorbers, transferring force to ligaments.</p>
+        </div>
       </div>
-    </div>
-    <!-- Knee -->
-    <div style="margin-bottom: 1.75rem;">
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-      ">
-        <span>Knee</span>
-        <span style="color: #60a5fa;">29%</span>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#7c3aed;"></div>
+        <div>
+          <p class="legend-label">Impact Traumas &amp; Fractures (15%)</p>
+          <p class="legend-desc">Static collision-based injuries.</p>
+        </div>
       </div>
-      <div style="
-        height: 12px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 999px;
-        overflow: hidden;
-      ">
-        <div style="
-          width: 29%;
-          height: 100%;
-          background: linear-gradient(90deg, #3b82f6, #60a5fa);
-          border-radius: 999px;
-        "></div>
-      </div>
-    </div>
-    <!-- Ankle -->
-    <div style="margin-bottom: 1.75rem;">
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-      ">
-        <span>Ankle</span>
-        <span style="color: #34d399;">11–23%</span>
-      </div>
-      <div style="
-        height: 12px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 999px;
-        overflow: hidden;
-      ">
-        <div style="
-          width: 17%;
-          height: 100%;
-          background: linear-gradient(90deg, #10b981, #34d399);
-          border-radius: 999px;
-        "></div>
-      </div>
-    </div>
-    <!-- Groin -->
-    <div style="margin-bottom: 2.5rem;">
-      <div style="
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-      ">
-        <span>Groin</span>
-        <span style="color: #fbbf24;">8–18%</span>
-      </div>
-      <div style="
-        height: 12px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 999px;
-        overflow: hidden;
-      ">
-        <div style="
-          width: 13%;
-          height: 100%;
-          background: linear-gradient(90deg, #f59e0b, #fbbf24);
-          border-radius: 999px;
-        "></div>
-      </div>
-    </div>
-    <!-- Lower Extremities Highlight -->
-    <div style="
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 1.25rem;
-      padding: 1.5rem;
-      text-align: center;
-    ">
-      <div style="
-        font-size: 3rem;
-        font-weight: 800;
-        line-height: 1;
-        color: #ffffff;
-        margin-bottom: 0.5rem;
-      ">
-        60–80%
-      </div>
-      <div style="
-        color: #94a3b8;
-        font-size: 1rem;
-      ">
-        of all severe injuries occur in the lower extremities
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#00bfa5;"></div>
+        <div>
+          <p class="legend-label">Illness &amp; Other (15%)</p>
+          <p class="legend-desc">General medical issues and systemic fatigue.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-ACWR
-Match intensity
-Other important variables based on a prediction model
+<script>
+(function() {
+  const svg = document.getElementById('donut');
+  const cx = 120, cy = 120, outerR = 100, innerR = 60;
+  const segments = [
+    { pct: 0.45, color: '#e91e8c' },
+    { pct: 0.25, color: '#2979ff' },
+    { pct: 0.15, color: '#7c3aed' },
+    { pct: 0.15, color: '#00bfa5' },
+  ];
 
+  function pt(angleDeg, r) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+  }
+
+  function makePath(a1, a2, color) {
+    const [ox1, oy1] = pt(a1, outerR);
+    const [ox2, oy2] = pt(a2, outerR);
+    const [ix1, iy1] = pt(a2, innerR);
+    const [ix2, iy2] = pt(a1, innerR);
+    const large = (a2 - a1) > 180 ? 1 : 0;
+    const d = `M${ox1},${oy1} A${outerR},${outerR} 0 ${large} 1 ${ox2},${oy2} L${ix1},${iy1} A${innerR},${innerR} 0 ${large} 0 ${ix2},${iy2} Z`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill', color);
+    svg.appendChild(path);
+  }
+
+  let angle = 0;
+  segments.forEach(s => {
+    const sweep = s.pct * 360;
+    makePath(angle, angle + sweep, s.color);
+    angle += sweep;
+  });
+})();
+</script>
+```
 
 #### How does a team overcome the growing injury crisis
 
-Adam Renshaw
-Dave Rennie and Leicester City's Premier League Triumph (2015-2016)
-The OFI Crete FC "Four-Pillar" Rehabilitation Strategy
+So, now that we've established some key causes for increased injury (insuffucient rest time between matches and ACWR) and we understand the importance of keeping players from missing gameweeks due to injury, the real question is how does one prevent this?
 
-Research highlights that a key metric to answer this question is ACWR:
+We have some examples that stand out. The most notable one is that of Adam Renshaw's tenure at Liverpool during their 2016 - 2017 season where he reportedly dropped the number of injuries from the previous season by 63%. In his own words he states:
 
-The Acute:Chronic Workload Ratio (ACWR), defined as the correlation between total match volume and injury is governed physiologically by load management metrics, most notably the Acute:Chronic Workload Ratio (ACWR). The ACWR is calculated by dividing the acute workload (typically the total distance covered or high-speed running executed in a trailing 1-week period) by the chronic workload (the 4-week rolling average of the acute workload).Spikes in the ACWR—which occur almost exclusively during congested fixture periods where acute match volume rapidly outpaces the player's baseline chronic physiological fitness—are heavily correlated with muscle strains and joint trauma. A significant majority of hamstring injuries, for example, occur when the mean ACWR in the week prior to the injury exhibits a rapid, unmanaged fluctuation. This demonstrates a crucial nuance: it is not merely the total cumulative number of matches over a nine-month season that causes injury, but the density and rapid accumulation of match minutes within concentrated micro-cycles without proportional chronic adaptation."
+>“I started [current role] in July 2016, and during that season we reduced preventable injuries by 63% compared to the season prior. The days missed due to these reduced from 623 days for season 2015/16 to 144 days missed during 2016/17. “The number of these injuries also reduced from 30 in 2015/16 to 11 in 2016/17. In 2015/16 there were 17 hamstring injuries. Last season we had three. I could go on, believe me.
 
-![image.png](attachment:image.png)
+What makes this reduction particularly noteworthy is the specific operational context. It occurred under the management of Jürgen Klopp, whose tactical philosophy—Gegenpressing—is notoriously intense. It requires players to engage in continuous, high-speed sprinting to win back possession immediately after losing the ball, a style that theoretically maximizes the risk of muscular fatigue and structural failure.
+
+So how did Adam Renshaw achieve this feat? The methods employed by Renshaw to achieve this reduction were not isolated to a single magical modality but were rooted in a holistic, highly integrated organizational structure. Renshaw emphasized that these results were achieved because the manager, coaching staff, sports science staff, and medical staff operated as a unified, "communal" collective. 
+
+The methodology was built on three core tenets:
+
+- **Binary Data Auditing**: Renshaw and Massey utilized a strict internal audit process that meticulously tracked preventable versus non-preventable injuries per 1,000 hours of exposure. By making the data strictly binary, they could isolate soft-tissue failures and directly assess the efficacy of their load management protocols week by week.
+
+- **Communal Load Management**: Instead of the medical team acting solely as a reactive, rehabilitative body, they proactively dictated training loads. The coaching staff synchronized their tactical demands with the physiological data provided by the medical team. If a player's biomechanical markers or GPS outputs indicated they were entering the ACWR "danger zone," the coaching staff adjusted the training intensity or rotated the player, thereby balancing performance maximization with injury mitigation.
+
+- **Accelerated Sub-Clinical Recovery**: Massey noted that while a standard muscle tear might intrinsically take 28 days to heal biologically, elite interventions aim to safely reduce this window by 25%. This was achieved by treating sub-clinical "knocks" and delayed onset muscle soreness (DOMS) proactively before they evolved into full structural tears, keeping players at optimum operational capacity.
+
+[@Williams2017MasterOfMedicine]
+
+Another notable mention is Dave Rennie, Leicester City's head physio during their monumental, 5000/1 odds, Premier League win. Leicester City had a remarkably low injury rate having the 4th least injuries in their title winning season.
+
+Dave Rennie viewed his role primarily as a "risk assessor," focusing on interpreting daily clinical signs to modify injury risk before trauma occurred. The methodologies employed by Rennie and his team included:
+
+- **Whole Body Cryotherapy (WBC)**: Leicester was one of only two EPL teams that season to utilize a permanent, liquid nitrogen-cooled cryotherapy chamber. Players were exposed to extreme temperatures ranging from -120°C to -150°C for up to three minutes immediately post-exercise. This modality drastically accelerated recovery by shutting down acute inflammatory cascades, alleviating post-exercise muscle stiffness, and eliciting neuro-hormonal responses that expedited cellular tissue repair [@SportsBusinessJournal2016CryotherapyLeicester].
+
+- **Advanced GPS Load Monitoring**: Balsom was a pioneer in athlete tracking technology. By utilizing GPS and heart rate data, the staff precisely quantified the varying degrees of physical fatigue, allowing for real-time micro-adjustments in daily training volume [@Catapult2017PaulBalsomWorkshops].
+
+- **Eccentric Hamstring Profiling**: Rennie utilized the NordBord hamstring testing system to routinely assess the eccentric strength of the players' hamstrings. Because hamstring tears predictably occur during eccentric deceleration, identifying bilateral strength deficits or overall baseline weakness allowed the medical staff to implement targeted, individualized preventative strengthening long before a strain occurred [@CSP2012SuccessUnderSpotlight].
+
+There are other physios out there that have done great work too, but the common thread amongst all of them is as follows:
+
+- **Prevent injury instead of rehab**: Physios are placing more effort on tracking player's health over time (ACWR, run intensity, heart rate, etc) to monitor or flag "danger zones" which dictate a player's workload.
+
+- **Close partnership with coaching staff**: As great as a physio may be, they need buy in from the coach. A team prevents their injury rate when the medical team form a key role in dictating workload and training intensity.
+
+- **Managing rest time for players**: Managing player rest is not strictly a physiotherapy responsibility, but it is a critical component of squad management. Success in a congested season depends not only on having a larger squad, but also on using the bench effectively. When a team relies heavily on a core group of five players who average fewer than four days of rest between matches, while fringe players go more than 20 days without meaningful minutes, it suggests a clear imbalance in workload distribution. Although consistently fielding your strongest 11 may deliver short-term results, this approach often leads to diminishing returns. Over the course of a long season, excessive reliance on a small group of players significantly increases the risk of fatigue and injury. As a result, teams may find themselves without their strongest lineup when it matters most. In many cases, the gains made by overusing the starting 11 early in the season can be undone when key players are unavailable during the decisive stages of the campaign.
