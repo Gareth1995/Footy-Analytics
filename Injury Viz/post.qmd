@@ -12,11 +12,13 @@ format:
     code-fold: false # Allows readers to hide/show your Python code
 ---
 
-Have you ever watched a movie where the main character ends up dying? This is how I feel everytime my favorite football team plays a match and I see a player down with injury. I hold my breath hoping he's just being dramatic and that he'll get up and keep going, but then I see the grimace, the looks to the bench and then the fateful, universal hand gesture that says "take me off coach". I have been punched in the gut, a lump forms in my throat and I question why the world has to be such a dark place.
+Have you ever watched a movie where the main character ends up dying? This is how I feel every time my favorite football team plays a match and I see a player down with injury. I hold my breath hoping he's just being dramatic and that he'll get up and keep going, but then I see the grimace, the looks to the bench and then the fateful, universal hand gesture that says "take me off coach". I have been punched in the gut, a lump forms in my throat and I question why the world has to be such a dark place.
 
-Injuries cost a team points! Studies have shown that player match availability exhibits a robust statistical correlation ($r > 0.85$) with overarching team success metrics, including final league standing, total points accumulated, and matches won. Advanced predictive modeling and heuristic interpolation reveal that approximately 136 days lost to injury equates to the loss of one league point, while 271 days lost effectively costs a team one place in the final league table [@eliakim2020estimation].  
+Not only do they break our hearts as football fans, but injuries cost a team points (and money)! Studies have shown that player match availability exhibits a robust statistical correlation ($r > 0.85$) with team success metrics, including final league standing, total points accumulated, and matches won. Approximately 136 days lost to injury equates to the loss of one league point, while 271 days lost effectively costs a team one place in the final league table [@eliakim2020estimation].  
 
-Some independent data scraping and visualisation has painted a similar picture. Check out the correlation between average gameweeks missed per player and the final league position of their team. This visual takes into account the "top 6" teams of the EPL. There is a striking correlation between the two variables (r = 0.32). The plot alone suggests that if a top 6 EPL team manage to keep their average-gameweeks-missed-per-player rate to below 3 they stand a very good chance of finishing in the top 3 (bar a few outliers). The lower a team's average gameweeks missed per player, the higher the team is expected to finish at the end of the season. 
+Some independent data scraping and visualisation of my own has painted a similar picture. Check out the correlation between average gameweeks missed per player and the final league position of their team. This visual takes into account the "top six" teams of the EPL. There is a striking correlation between the two variables (r = 0.32).  The plot alone suggests that if a top six EPL team manage to keep their average-gameweeks-missed-per-player rate to below 3 they stand a very good chance of finishing in the top 3 (bar a couple of outliers). The lower a team's average gameweeks missed per player, the higher the team is expected to finish at the end of the season. 
+
+While one may think the phrase “striking correlation” to describe a correlation of r=0.32 might be a bit exaggerated, it is important to understand what this actually means. Given how multi-dimensional and highly complex predicting league position is, a variable with a correlation of r=0.32 explains roughly 10% of the variation in final league position through average gameweeks missed per player alone. That's a fair amount of heavy lifting based off just one variable.
 
 ```{python}
 import pandas as pd
@@ -123,7 +125,7 @@ fig
 
 \
 
-We have clear evidence that injuries, and especially matches missed per player in the EPL have an immense impact on their team's performance and what's worse is that there is a clear trend that average gameweeks missed per player are increasing over time. See the plot below.
+We have clear evidence that injuries, and especially matches missed per player in the EPL have an immense impact on their team's performance and what's worse is that there is a clear trend that average gameweeks missed per player have increased over time. See the plot below.
 
 ```{python}
 #| warning: false
@@ -200,32 +202,31 @@ fig
 
 Now the real question is, "What's the deal with all the injuries??" With rising injury levels in the EPL like this we are looking at an evolving game where it won't only be set piece tactics, press intensity, possession, attack and defence tactics that wins the league, but in fact, keeping players fit may become the key to winning the league in a climate of ever increasing injuries.
 
-Now two key questions come to mind when analysing this data. Firstly, what is causing these injuries? and secondly, How does a team stem the flow of this steady increase of injuries to a point where they give themselves a strong competitive advantage? I will use academic articles and some independently sourced data to answer these questions.
+Now, two key questions come to mind when analysing this data. Firstly, what is causing these injuries? Secondly, How does a team stem the flow of this steady increase of injuries to a point where they give themselves a strong competitive advantage? I will use academic articles and some independently sourced data to answer these questions.
 
 #### What is causing these injuries?
 
-Match congestion
 The most talked about issue amongst managers, pundits and fans is the increased number of matches that is leading to player injuries. There is research that illustrates that this does lead to increased injuries, but it is not necessarily the number of matches played in a season that is the issue, but rather the congestion that positively correlates to higher injury rate.
 
 Fixture congestion is generally defined within the literature as a competitive schedule requiring teams to compete with $\leq 4$ days of physiological recovery between matches. As much as we would like to blame match congestion on increased injury, the research doesn't show the relationship as we expect.
 
-Firstly, the research regarding the relationship between player injury rate and match congestion is surprisingly low. A paper that consolidated around 8 papers on this topic stated the following:
+Firstly, the research regarding the relationship between player injury rate and match congestion is surprisingly low. A paper that consolidated around 8 research papers on this topic stated the following:
 
 >"A total of eight articles were included in the review. Five studies identified that congested fixture schedules expose players to increased match injury incidence, although layoff duration was typically lower during congested periods. Two studies identified that training and overall injury incidence were higher during congested periods, with another study identifying a lower training injury incidence during congested periods." [@Page2023FixtureCongestionInjury]
 
-So while injury rate may increase during congested match periods, the lay off times are relatively low. This means that while match congestion does lead to an increase in injury rate, it doesn't necessarily lead to an increase in average games missed per player over time.
+So while injury rate may increase during congested match periods, the layoff times are relatively low. This means that while match congestion does lead to an increase in injury rate, it doesn't necessarily lead to an increase in average games missed per player over time.
 
-Research notes some key factors that relate to injury severity (where a severe injury means a player is out for at least 28 days, therfore missing more match days). Some of these factors are obvious some not. The 4 key factors are as follows:
+Now while a few niggles here and there can disrupt a team in a sizeable way, the biggest issue is the injuries that put a player out for weeks or months and require pricey and lengthy rehabilitation. Research notes some key factors that relate to injury severity (where a severe injury means a player is out for at least 28 days or more). Some of these factors are obvious some not. The four key factors are as follows:
 
 - **Previous injury history:** Players with previous injuries tend to get injured again as the scar tissue that forms during healing is less elastic and weaker than native muscle tissue.
 
-- **Acute:Chronic Workload Ratio (ACWR) Spikes:** Calculated by omparing what a player has done in the last 7 days (Acute load) to what they have averaged over the last 28 days (Chronic load). For example, when the ACWR exceeds $1.5$ (meaning the player is doing 50% more high-intensity work this week than their body is conditioned for). Injuries occurring when a player is in this red zone tend to be of much higher severity because the tissue fails catastrophically under unfamiliar peak tension, rather than just sustaining a micro-tear.
+- **Acute:Chronic Workload Ratio (ACWR) Spikes:** Calculated by comparing what a player has done in the last 7 days (Acute load) to what they have averaged over the last 28 days (Chronic load). For example, when the ACWR exceeds $1.5$, meaning a player is performing 50% more high-intensity work than their recent training load has conditioned them for, it may indicate that the player is placing unusually high physiological stress on their body, potentially increasing their susceptibility to injury. Injuries occurring when a player is in this red zone tend to be of much higher severity because the tissue fails catastrophically under unfamiliar peak tension, rather than just sustaining a micro-tear.
 
 - **Accumulated Neuromuscular Fatigue:** Sports scientists don't just look at how much a player runs; they test how well a player's nervous system is firing.
 
-- **Age and Tissue Degeneration:** The older a player the easier it is to sustain injuries (typically over the age of 28-30 is where the cellular turnover slows down, tendon stiffness changes, and baseline systemic inflammation often increases.)
+- **Age and Tissue Degeneration:** The older a player, the easier it is to sustain injuries (typically over the age of 28-30 is where the cellular turnover slows down, tendon stiffness changes, and baseline systemic inflammation often increases.)
 
-The ACWR factor stands out to me most as this is a very trackable statistic that could potentially be used to monitor when a player is at high risk of injury, but also to build their workload up at a stable rate such that the average workload is at a constantly high level which will lead to less weekly activity spikes. A look at the injury distribution below shows us how necessary it is to put methods in place to prevent the non-contact soft tissue injuries as these are the injuries that are increasing over time [@Page2023FixtureCongestionInjury]. This becomes even more important as we see the landscape of football becoming more intense over time too. [@Allen1643, @Xie2026HighSpeedRunningInjury]
+The ACWR factor stands out to me the most as this is a very trackable statistic that could potentially be used to monitor when a player is at high risk of injury, but also to build their workload up at a stable rate such that the average workload is at a constantly high level which will lead to less weekly activity spikes. A look at the injury distribution below shows us how necessary it is to put methods in place to prevent the non-contact soft tissue injuries as these are the injuries that are increasing over time [@Page2023FixtureCongestionInjury]. This becomes even more important as we see the landscape of football becoming more intense over time too. [@Allen1643, @Xie2026HighSpeedRunningInjury]
 
 ```{=html}
 <style>
@@ -374,23 +375,23 @@ The ACWR factor stands out to me most as this is a very trackable statistic that
 
 #### How does a team overcome the growing injury crisis
 
-So, now that we've established some key causes for increased injury (insuffucient rest time between matches and ACWR) and we understand the importance of keeping players from missing gameweeks due to injury, the real question is how does one prevent this?
+So, now that we've established some key causes for increased injury (insufficient rest time between matches and ACWR spikes amongst others) and we understand the importance of keeping players from missing gameweeks due to injury, the real question is how does one prevent this?
 
 We have some examples that stand out. The most notable one is that of Adam Renshaw's tenure at Liverpool during their 2016 - 2017 season where he reportedly dropped the number of injuries from the previous season by 63%. In his own words he states:
 
 >“I started [current role] in July 2016, and during that season we reduced preventable injuries by 63% compared to the season prior. The days missed due to these reduced from 623 days for season 2015/16 to 144 days missed during 2016/17. “The number of these injuries also reduced from 30 in 2015/16 to 11 in 2016/17. In 2015/16 there were 17 hamstring injuries. Last season we had three. I could go on, believe me.
 
-What makes this reduction particularly noteworthy is the specific operational context. It occurred under the management of Jürgen Klopp, whose tactical philosophy—Gegenpressing—is notoriously intense. It requires players to engage in continuous, high-speed sprinting to win back possession immediately after losing the ball, a style that theoretically maximizes the risk of muscular fatigue and structural failure.
+What makes this reduction particularly noteworthy is the specific operational context. It occurred under the management of Jürgen Klopp, whose tactical philosophy is notoriously intense. It requires players to engage in continuous, high-speed sprinting to win back possession immediately after losing the ball, a style that theoretically maximizes the risk of muscular fatigue and structural failure.
 
-So how did Adam Renshaw achieve this feat? The methods employed by Renshaw to achieve this reduction were not isolated to a single magical modality but were rooted in a holistic, highly integrated organizational structure. Renshaw emphasized that these results were achieved because the manager, coaching staff, sports science staff, and medical staff operated as a unified, "communal" collective. 
+So how did Adam Renshaw achieve this drastic injury rate reduction? Unfortunately there is no magic trick that solved the injury crisis but rather it was rooted in highly integrated organisation structure. Renshaw emphasized that these results were achieved because the manager, coaching staff, sports science staff, and medical staff operated as a unified, "communal" collective. 
 
-The methodology was built on three core tenets:
+Renshaw's methodology was built on three core tenets:
 
-- **Binary Data Auditing**: Renshaw and Massey utilized a strict internal audit process that meticulously tracked preventable versus non-preventable injuries per 1,000 hours of exposure. By making the data strictly binary, they could isolate soft-tissue failures and directly assess the efficacy of their load management protocols week by week.
+- **Binary Data Auditing**: Renshaw utilized a strict internal audit process that meticulously tracked preventable versus non-preventable injuries per 1,000 hours of exposure. By making the data strictly binary, they could isolate soft-tissue failures and directly assess the efficacy of their load management protocols week by week.
 
 - **Communal Load Management**: Instead of the medical team acting solely as a reactive, rehabilitative body, they proactively dictated training loads. The coaching staff synchronized their tactical demands with the physiological data provided by the medical team. If a player's biomechanical markers or GPS outputs indicated they were entering the ACWR "danger zone," the coaching staff adjusted the training intensity or rotated the player, thereby balancing performance maximization with injury mitigation.
 
-- **Accelerated Sub-Clinical Recovery**: Massey noted that while a standard muscle tear might intrinsically take 28 days to heal biologically, elite interventions aim to safely reduce this window by 25%. This was achieved by treating sub-clinical "knocks" and delayed onset muscle soreness (DOMS) proactively before they evolved into full structural tears, keeping players at optimum operational capacity.
+- **Accelerated Subclinical Recovery**: Renshaw noted that while a standard muscle tear might intrinsically take 28 days to heal biologically, elite interventions aim to safely reduce this window by 25%. This was achieved by treating sub-clinical "knocks" and delayed onset muscle soreness (DOMS) proactively before they evolved into full structural tears, keeping players at optimum operational capacity.
 
 [@Williams2017MasterOfMedicine]
 
@@ -400,7 +401,7 @@ Dave Rennie viewed his role primarily as a "risk assessor," focusing on interpre
 
 - **Whole Body Cryotherapy (WBC)**: Leicester was one of only two EPL teams that season to utilize a permanent, liquid nitrogen-cooled cryotherapy chamber. Players were exposed to extreme temperatures ranging from -120°C to -150°C for up to three minutes immediately post-exercise. This modality drastically accelerated recovery by shutting down acute inflammatory cascades, alleviating post-exercise muscle stiffness, and eliciting neuro-hormonal responses that expedited cellular tissue repair [@SportsBusinessJournal2016CryotherapyLeicester].
 
-- **Advanced GPS Load Monitoring**: Balsom was a pioneer in athlete tracking technology. By utilizing GPS and heart rate data, the staff precisely quantified the varying degrees of physical fatigue, allowing for real-time micro-adjustments in daily training volume [@Catapult2017PaulBalsomWorkshops].
+- **Advanced GPS Load Monitoring**: By utilizing GPS and heart rate data, the staff precisely quantified the varying degrees of physical fatigue, allowing for real-time micro-adjustments in daily training volume [@Catapult2017PaulBalsomWorkshops].
 
 - **Eccentric Hamstring Profiling**: Rennie utilized the NordBord hamstring testing system to routinely assess the eccentric strength of the players' hamstrings. Because hamstring tears predictably occur during eccentric deceleration, identifying bilateral strength deficits or overall baseline weakness allowed the medical staff to implement targeted, individualized preventative strengthening long before a strain occurred [@CSP2012SuccessUnderSpotlight].
 
@@ -408,6 +409,8 @@ There are other physios out there that have done great work too, but the common 
 
 - **Prevent injury instead of rehab**: Physios are placing more effort on tracking player's health over time (ACWR, run intensity, heart rate, etc) to monitor or flag "danger zones" which dictate a player's workload.
 
-- **Close partnership with coaching staff**: As great as a physio may be, they need buy in from the coach. A team prevents their injury rate when the medical team form a key role in dictating workload and training intensity.
+- **Track key data points and act on them**: The truly advanced teams don't just run on gut feel; they are rigorous in their data capturing and data tracking, but most importantly, their data listening skills. If the data is calling for a certain preventative action, do it! 
 
-- **Managing rest time for players**: Managing player rest is not strictly a physiotherapy responsibility, but it is a critical component of squad management. Success in a congested season depends not only on having a larger squad, but also on using the bench effectively. When a team relies heavily on a core group of five players who average fewer than four days of rest between matches, while fringe players go more than 20 days without meaningful minutes, it suggests a clear imbalance in workload distribution. Although consistently fielding your strongest 11 may deliver short-term results, this approach often leads to diminishing returns. Over the course of a long season, excessive reliance on a small group of players significantly increases the risk of fatigue and injury. As a result, teams may find themselves without their strongest lineup when it matters most. In many cases, the gains made by overusing the starting 11 early in the season can be undone when key players are unavailable during the decisive stages of the campaign.
+- **Close partnership with coaching staff**: As great as a physio may be, they need buy-in from the coach. A team prevents their injury rate when the medical team form a key role in dictating workload and training intensity.
+
+- **Managing rest time for players**: Managing player rest is not strictly a physiotherapist's responsibility, but it is a critical component of squad management. Success in a congested season depends not only on having a larger squad, but also on using the bench effectively. When a team relies heavily on a core group of five players who average fewer than four days of rest between matches, while fringe players go more than 20 days without meaningful minutes, it suggests a clear imbalance in workload distribution. Although consistently fielding your strongest 11 may deliver short-term results, this approach often leads to diminishing returns. Over the course of a long season, excessive reliance on a small group of players significantly increases the risk of fatigue and injury. As a result, teams may find themselves without their strongest lineup when it matters most. In many cases, the gains made by overusing the starting 11 early in the season can be undone when key players are unavailable during the decisive stages of the campaign.
