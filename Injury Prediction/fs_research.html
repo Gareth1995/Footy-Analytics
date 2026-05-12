@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Gareth Edwards">
-<meta name="dcterms.date" content="2024-08-16">
 
-<title>Italian xT – Gareth Edwards</title>
+<title>FS Research Output – Gareth Edwards</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -57,6 +55,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -102,33 +129,18 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Italian xT</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Football</div>
-  </div>
-  </div>
+<h1 class="title">FS Research Output</h1>
+</div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Gareth Edwards </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">August 16, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -138,293 +150,155 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>Expected threat, or xT, is a concept widely spoken, widely used and already well known. To hop onto the trend, I made use of the “Calculating xT (position-based)” tutorial presented by soccermatics (<a href="https://soccermatics.readthedocs.io/en/latest/gallery/lesson4/plot_ExpectedThreat.html">see here</a>).</p>
-<p>In my short project I made use of the Serie A (2015/2016) dataset provided by statsbomb. I extracted data from the top four teams of that year (Inter Milan, Juventus, Napoli, Roma) and compared it to four middle table teams for that season (Lazio, Fiorentina, Empoli, Genoa) across a few sector-based metrics that can be visualized using heatmaps (goal frequency per sector, ball movement rate per sector, shot frequency per sector, xG per sector and xT)</p>
-<p>The aim is to look for any visible differences that make top teams different to middle table teams. Perhaps in the plots we see visible areas where middle table teams can make the jump to top table teams, based on their style of attack.</p>
+<p>Research indicates that injuries often result from a “perfect storm” of factors where baseline vulnerabilities are exacerbated by acute spikes in physical demand. (Think ACWR, can we find a similar measure but just based on match congestion?)</p>
+<section id="biological-and-intrinsic-risk-determinants" class="level3">
+<h3 class="anchored" data-anchor-id="biological-and-intrinsic-risk-determinants">Biological and Intrinsic Risk Determinants</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 8%">
+<col style="width: 40%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable Name</th>
+<th>Type</th>
+<th>Physiological Significance</th>
+<th>Data Capture Method</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Age</td>
+<td>Continuous</td>
+<td>Influences tissue elasticity, collagen density, and recovery rates.</td>
+<td>Athlete Registration</td>
+</tr>
+<tr class="even">
+<td>Height/Weight</td>
+<td>Continuous</td>
+<td>Determines mechanical leverage on joints and total ground reaction forces.</td>
+<td>Medical Screening</td>
+</tr>
+<tr class="odd">
+<td>Body Mass Index (BMI)</td>
+<td>Derived</td>
+<td>Proxy for body composition and mechanical loading efficiency.</td>
+<td>Calculated</td>
+</tr>
+<tr class="even">
+<td>Playing Position</td>
+<td>Categorical</td>
+<td>Dictates unique movement patterns (e.g., more sprinting for forwards).</td>
+<td>Roster Data</td>
+</tr>
+<tr class="odd">
+<td>Injury History</td>
+<td>Continuous</td>
+<td>Prior injury count is the strongest predictor of future ligament and muscle failures.</td>
+<td>Medical Records/Archive</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="ball-movement" class="level1 page-columns page-full">
-<h1>Ball Movement</h1>
-<p>One fundamental part of football is ball movement. Each team has it’s own pattern in terms of how the ball is moved. Some enjoy play on the flanks and rely more on their wingers to put in crosses, other teams generate more central attacks and make use of creative midfielders while others (although not so often anymore) may use longer passes to move the ball forward quicker, or to overcome a high press. Teams can also change their style from game to game as they adapt to their opponents.</p>
-<p>These aspects one would expect to be able to see on a visual, by plotting where on the pitch each team commonly moves the ball. Below is a plot showing the ball movement heatmap of the eight teams we are investigating.</p>
-<section id="ball-movement-heatmaps" class="level2 page-columns page-full" style="text-align: center">
-<h2 style="text-align: center" class="anchored" data-anchor-id="ball-movement-heatmaps">Ball Movement Heatmaps</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plots/movement map/legend.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="cell column-page quarto-layout-panel" data-grid-template-columns="repeat(4, 1fr)" data-layout-nrow="2" data-layout-ncol="4">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/Juventus_movement_map.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/Napoli_movement_map.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/AS Roma_movement_map.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/Inter Milan_movement_map.png" class="img-fluid"></p>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/Fiorentina_movement_map.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/Lazio_movement_map.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/Genoa_movement_map.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/movement map/Empoli_movement_map.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="caption">
-<p>Top four plots belong to the top four teams (arranged in order from 1st to 4th going left to right). The bottom row of the plot are the four mid-table clubs in order of their final league positions (5th, 8th, 10th and 11th)</p>
-</div>
-<div class="key_points">
-<p>Here are key observations that stand out when analysing this plot:</p>
-<ul>
-<li><p>Darker squares in the Juventus and Napoli (placed 1st and 2nd in the league) heatmaps compared to the other clubs. This is an indication of a higher frequency of ball movement.</p></li>
-<li><p>The pattern of play is similar amongst all teams in terms of where ball movement happens most (center and then wide).</p></li>
-<li><p>Napoli and Inter Milan show a stronger favoritism to move the ball toward the left side of the field.</p></li>
-<li><p>Juventus seem to utilize both flanks equally.</p></li>
-<li><p>Juventus, Napoli and Empoli have darker middle squares compared to the others, thus showing a stronger reliance on their central midfielders.</p></li>
-</ul>
-</div>
+<section id="physiological-and-recovery-indicators" class="level3">
+<h3 class="anchored" data-anchor-id="physiological-and-recovery-indicators">Physiological and Recovery Indicators</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 18%">
+<col style="width: 9%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Physiological Metric</th>
+<th>Sensor Type</th>
+<th>Units</th>
+<th>Impact on Injury Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Heart Rate Variability (HRV)</td>
+<td>PPG / ECG</td>
+<td>ms (RMSSD)</td>
+<td>Low HRV indicates sympathetic dominance and incomplete recovery.</td>
+</tr>
+<tr class="even">
+<td>Resting Heart Rate</td>
+<td>Chest Strap / PPG</td>
+<td>bpm</td>
+<td>Elevation above baseline suggests systemic stress or illness.</td>
+</tr>
+<tr class="odd">
+<td>Blood Oxygen (SpO₂)</td>
+<td>Pulse Oximetry</td>
+<td>%</td>
+<td>Reflects cardiorespiratory efficiency and adaptation to altitude or load.</td>
+</tr>
+<tr class="even">
+<td>Core Body Temperature</td>
+<td>Infrared / Pill</td>
+<td>°C</td>
+<td>Deviations may indicate inflammation or thermal stress.</td>
+</tr>
+<tr class="odd">
+<td>Hydration Level</td>
+<td>Bioimpedance</td>
+<td>%</td>
+<td>Dehydration reduces muscle contractile efficiency and cognitive focus.</td>
+</tr>
+</tbody>
+</table>
+<p>These metrics act as early-warning signals. For instance, a decline in HRV combined with a rise in resting heart rate often precedes “overuse” injuries by 48 to 72 hours, providing the window necessary to modify a player’s load before the next match.</p>
 </section>
-</section>
-<section id="shot-frequency" class="level1 page-columns page-full">
-<h1>Shot Frequency</h1>
-<p>Ball movement is only the half of it, if you don’t shoot, you won’t score. Below we visualize plots of shot frequency per sector and we compare the heatmaps between each team.</p>
-<section id="shot-heatmaps" class="level2 page-columns page-full" style="text-align: center">
-<h2 style="text-align: center" class="anchored" data-anchor-id="shot-heatmaps">Shot Heatmaps</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plots/shot frequency/legend.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="cell column-page quarto-layout-panel" data-grid-template-columns="repeat(4, 1fr)" data-layout-nrow="2" data-layout-ncol="4">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/Juventus_shot_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/Napoli_shot_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/AS Roma_shot_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/Inter Milan_shot_freq.png" class="img-fluid"></p>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/Fiorentina_shot_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/Lazio_shot_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/Genoa_shot_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/shot frequency/Empoli_shot_freq.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="key_points">
-<p>Key observations:</p>
-<ul>
-<li><p>Juventus and Napoli are more likely to take shots from outside or on the edge of the box compared to other teams.</p></li>
-<li><p>Napoli take more shots from more frequently from the left side of goal compared to other clubs. Perhaps due to a winger often coming inside and shooting (this would need to be investigated more).</p></li>
-<li><p>Roma, Inter Milan, Genoa and Empoli take most of their shots from the left side of the penalty spot compared to other teams. Juventus is the only team that favour the sector right of the penalty spot.</p></li>
-</ul>
-</div>
-</section>
-</section>
-<section id="goal-frequency" class="level1 page-columns page-full">
-<h1>Goal Frequency</h1>
-<p>In fact, sometimes when you shoot you don’t score… Goals are everything. Below we plot goal frequency per sector for each team and we investigate how these differ from team to team.</p>
-<section id="goal-frequency-heatmaps" class="level2 page-columns page-full" style="text-align: center">
-<h2 style="text-align: center" class="anchored" data-anchor-id="goal-frequency-heatmaps">Goal Frequency Heatmaps</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plots/goal frequency/legend.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="cell column-page quarto-layout-panel" data-grid-template-columns="repeat(4, 1fr)" data-layout-nrow="2" data-layout-ncol="4">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/Juventus_goal_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/Napoli_goal_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/AS Roma_goal_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/Inter Milan_goal_freq.png" class="img-fluid"></p>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/Fiorentina_goal_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/Lazio_goal_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/Genoa_goal_freq.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/goal frequency/Empoli_goal_freq.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="key_points">
-<p>Key observations:</p>
-<ul>
-<li><p>Juventus score more from shots outside the box compared to the other teams. This coincides with their superior shooting frequency from outside the box.</p></li>
-<li><p>Inter Milan have a very small segment from which their goals come from. They rely on working the ball into the box around the penalty area. (restricting them to shots from outside the box may be beneficial) A similar pattern is evident for Fiorentina and Genoa.</p></li>
-<li><p>Most teams score most of their goals from the 4 sectors just oustide the 6 yard box (focused defense in this section, or prevention of the ball getting into this section could be key).</p></li>
-</ul>
-</div>
-</section>
-</section>
-<section id="xg" class="level1 page-columns page-full">
-<h1>xG</h1>
-<p>The expected goals from each section will tell us which sections a team could be most dangerous in. Further investigation should go into which player is most dangerous in each sector. This could improve on defensive tactics, however, it is most likely that the player who scores most should be on the ball the least in the sections where xG is the highest for each team. Below we see the xG heatmap for each team.</p>
-<section id="xg-heatmap" class="level2 page-columns page-full" style="text-align: center">
-<h2 style="text-align: center" class="anchored" data-anchor-id="xg-heatmap">xG Heatmap</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plots/xG/legend.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="cell column-page quarto-layout-panel" data-grid-template-columns="repeat(4, 1fr)" data-layout-nrow="2" data-layout-ncol="4">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/Juventus_xg.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/Napoli_xg.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/AS Roma_xg.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/Inter Milan_xg.png" class="img-fluid"></p>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/Fiorentina_xg.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/Lazio_xg.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/Genoa_xg.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
-<p><img src="plots/xG/Empoli_xg.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="caption">
-<p>The xG displayed in this plot was calculated by statsBomb</p>
-</div>
-<div class="key_points">
-<p>Key points:</p>
-<ul>
-<li>xG plots mostly coincide with the goal frequency plots.</li>
-</ul>
-</div>
-</section>
-</section>
-<section id="xt" class="level1 page-columns page-full">
-<h1>xT</h1>
-<p>Expected threat is the method that bases a value score on every section on the pitch. When a team has the ball in a sector that has a higher xT than the last, they have effectively increased their chances of scoring a goal. If a team moves the ball from a high xT zone to a lower xT zone they decrease their chances of scoring a goal (theoretically). For further details on xT see the following post <a href="https://karun.in/blog/expected-threat.html">here</a>. Below is a plot of each team’s xT heatmap.</p>
-<section id="xt-heatmap" class="level2 page-columns page-full" style="text-align: center">
-<h2 style="text-align: center" class="anchored" data-anchor-id="xt-heatmap">xT Heatmap</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plots/xT/legend.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="cell column-page quarto-layout-panel" data-layout-nrow="2" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/Juventus_xt.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/Napoli_xt.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="cell column-page quarto-layout-panel" data-layout-nrow="2" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/AS Roma_xt.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/Inter Milan_xt.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="cell column-page quarto-layout-panel" data-layout-nrow="2" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/Fiorentina_xt.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/Lazio_xt.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="cell column-page quarto-layout-panel" data-layout-nrow="2" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/Genoa_xt.png" class="img-fluid"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plots/xT/Empoli_xt.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="key_points">
-<p>Key points:</p>
-<ul>
-<li><p>Fiorentina, Napoli and Lazio have a higher threat around the penalty area compared to the other teams.</p></li>
-<li><p>Juventus have a uniquely high threat in the sector that lies two sectors above the bottom right corner (xT = 0.12).</p></li>
-<li><p>Juventus have the highest xT in the 6 yard box compared to the other teams. This is a good indication that Juventus were more clinical with their finishing compared to the other clubs.</p></li>
-<li><p>xT is always highest in the four sectors that encompass the penalty spot and the face of the goal. This is the same for all teams.</p></li>
-</ul>
-</div>
-</section>
-</section>
-<section id="conclusion" class="level1">
-<h1>Conclusion</h1>
-<p>So, what sets the top teams apart from the rest? Below we have some concluding points that became evident in these visualisations:</p>
-<ul>
-<li><p>Top sides move the ball more.</p></li>
-<li><p>Top sides shoot more frequently and take their chances from outside the box too. They, try their luck or have more confidence (further research could be applied here).</p></li>
-<li><p>Top teams are more clinical when they get into ideal goal scoring positions.</p></li>
-</ul>
-<p>There are also some similarities between all clubs that stand out which tell us something about the general game of football:</p>
-<ul>
-<li><p>The highest threat and most goals scored take place in the sectors that are between the penalty spot and the face of the goal.</p></li>
-<li><p>Team movement maps are very similar as the ball often moves to the middle of the pitch and then wide. Very little action takes place in the middle portion of the pitch between the half way line circle and the edge of the box. (These are possibly spaces to exploit. Further analysis could go into player’s off the ball movements)</p></li>
-</ul>
+<section id="biomechanical-and-kinematic-features" class="level3">
+<h3 class="anchored" data-anchor-id="biomechanical-and-kinematic-features">Biomechanical and Kinematic Features</h3>
+<p>Biomechanical data captures the “how” of movement. It identifies subtle changes in gait, joint angles, or muscle activation that might indicate an impending failure due to fatigue-induced technical breakdown.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 17%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Biomechanical Variable</th>
+<th>Metric</th>
+<th>Significance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Electromyography (EMG)</td>
+<td><span class="math inline">\(\mu\)</span>V</td>
+<td>Measures muscle activation intensity and fatigue-induced drop-off.</td>
+</tr>
+<tr class="even">
+<td>Joint Angle Symmetry</td>
+<td>Degrees</td>
+<td>Asymmetry in knee or ankle angles during cutting is a high-risk indicator.</td>
+</tr>
+<tr class="odd">
+<td>Ground Reaction Force</td>
+<td>Newtons (N)</td>
+<td>High impact forces during landing correlate with ACL and meniscus risk.</td>
+</tr>
+<tr class="even">
+<td>Gait Speed / Cadence</td>
+<td>m/s / spm</td>
+<td>Shifts in rhythm often indicate underlying discomfort or fatigue.</td>
+</tr>
+<tr class="odd">
+<td>Range of Motion (ROM)</td>
+<td>Degrees</td>
+<td>Reductions in flexibility (e.g., hamstring) increase strain during sprints.</td>
+</tr>
+</tbody>
+</table>
+<p>Second-order insights from biomechanical data suggest that “Gait Symmetry” is perhaps more important than absolute speed. A player who maintains speed but shows a 5% shift in weight distribution is often compensating for a sub-clinical tweak, which drastically elevates the risk of a high-grade tear in the subsequent match.</p>
 
 
 </section>
