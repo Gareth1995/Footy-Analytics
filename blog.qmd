@@ -1,5 +1,6 @@
 ---
-title: "Blog Posts"
+title: ""
+page-layout: article
 listing:
   contents: 
     - "*/post.qmd"  # Looks in all folders, but ONLY grabs this exact filename

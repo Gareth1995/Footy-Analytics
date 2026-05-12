@@ -17,3 +17,4 @@ website:
 format:
   html:
     theme: cosmo # Or whatever theme you are currently using
+    css: styles.css

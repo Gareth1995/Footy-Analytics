@@ -1,24 +1,46 @@
 ---
-title: "Gareth Edwards"
-image: profile3.png
-about:
-  template: jolla
-  image-width: 15em
-  image-shape: round
-  links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/yourusername
-    - icon: github
-      text: GitHub
-      href: https://github.com/Gareth1995
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com/in/yourusername
+title: ""
+format:
+  html:
+    page-layout: full
 ---
 
-Hi, I'm Gareth. Welcome to my data analytics portfolio. 
+::: {.split-container}
 
-I use Python, R, and open-source event data to analyze the beautiful game. Check out the **Articles** tab above to see my latest work, including deep dives into injury crises and tactical analyses of teams like Bayer Leverkusen.
+::: {.left-pane}
+![](profile3.png){.profile-pic}
 
-*(Add a picture of yourself, a summary of your skills, or links to your GitHub/Twitter here!)*
+# Gareth Edwards
+## Football Data Analyst
+
+<a href="mailto:gareth.reeve50@gmail.com" class="btn-dark">Email me</a>
+
+::: {.social-icons}
+<a href="https://instagram.com/yourhandle"><i class="bi bi-instagram"></i></a>
+<a href="https://twitter.com/yourhandle"><i class="bi bi-twitter"></i></a>
+<a href="https://github.com/yourhandle"><i class="bi bi-github"></i></a>
+<a href="https://linkedin.com/in/yourhandle"><i class="bi bi-linkedin"></i></a>
+:::
+:::
+
+::: {.right-pane}
+# Welcome to my Portfolio
+
+If you are on this page, congratulations. You have taken the path less travelled.
+
+If you are into Football, Data, or anything else, you are in the right place. They say the journey is often better than the destination, but that doesn't apply here. You have landed on my personal web page and you won't be disappointed. Read something. Learn something. Contact me. Don't contact me. Do what you want to do, never let a stranger tell you what to do.
+
+Reach out if you see something interesting and want to colab on something or discuss a topic you may be interested in.
+
+And to end off with an inspirational quote:
+
+"Just do it." \
+- Sir Isaac Newton
+
+::: {.button-group}
+<a href="My_CV.pdf" target="_blank" class="btn-dark">Resume</a>
+<a href="blog.qmd" class="btn-dark">Articles</a>
+:::
+:::
+
+:::
