@@ -10,7 +10,7 @@ from typing import List
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 sns.set_theme(style="whitegrid", palette="muted")
 
-class SubjectiveMetricsEDA:
+class MetricsEDA:
     """
     A comprehensive suite for Exploratory Data Analysis on athlete monitoring data.
     """
