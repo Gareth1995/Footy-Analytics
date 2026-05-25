@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Gareth Edwards">
+<meta name="dcterms.date" content="2026-05-25">
 
-<title>blog – Gareth Edwards</title>
+<title>Football Player Injury Risk Analysis – Gareth Edwards</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,24 +25,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -56,77 +75,22 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
 
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Gareth Edwards</span>
     </a>
   </div>
@@ -136,15 +100,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./blog.html" aria-current="page"> 
+    <a class="nav-link" href="../blog.html"> 
 <span class="menu-text">Articles</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./my_cv.pdf" target="_blank"> 
+    <a class="nav-link" href="../my_cv.pdf" target="_blank"> 
 <span class="menu-text">CV</span></a>
   </li>  
 </ul>
@@ -158,144 +122,261 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Rm9vdGJhbGw=">Football <span class="quarto-category-count">(4)</span></div></div></div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Football Player Injury Risk Analysis</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Football</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Gareth Edwards </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 25, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Listen, football injuries aren’t cool. I’ve elborated on this in depth in my previous blog post so let me not bore you with further ramblings. I want to get down to the meat (pause).</p>
+<p>We know how critical injury prevention is for a Premier League team who want to win the league. The average number of gameweeks missed per player for a team closely correlates with where that team finishes in the season, and this is especially true for the top sides in England. The margins are extremely fine. The plot below shows us that teams who maintain lower average gameweeks missed per player are far more likely to finish in the top two.</p>
+<div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images\injury_corr_with_league_position.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
+</figcaption>
+</figure>
+</div>
+<p>The question now begs, how can a team prevent these injuries from happening? The answer may be found in survival analysis. Survival analysis models time-to-event and has the ability to convert this to a risk score over time. It helps the coaching staff and physio staff to know, at a given time, what is the injury risk score of player x.</p>
+<p>The approach I took was to loosely follow the study by Catrell et al <span class="citation" data-cites="catterall2026timetoinjury">(<a href="#ref-catterall2026timetoinjury" role="doc-biblioref">Catterall et al. 2026</a>)</span>. Here a Survival Analysis was carried out on the SoccerMon dataset <span class="citation" data-cites="midoglu2022soccermon">(<a href="#ref-midoglu2022soccermon" role="doc-biblioref">Midoglu et al. 2022</a>)</span>. SoccerMon is “A Large-Scale Multivariate Soccer Athlete Health, Performance, and Position Monitoring Dataset”. SoccerMon is the largest soccer athlete dataset available that tracks both subjective (using questionnaire methods) and objective features (using GPS trackers and other sensors). The data comes from two teams from the Norwegian women’s elite soccer league over the span of two years (2020-2021).</p>
+<p>I used this paper to inform which features I extract from the SoccerMon dataset. Below is a list of the features I extracted…</p>
+<p>Each feature represents a 21 day moving average of that feature.</p>
+<p>After extensive EDA, data splitting and the necessary transformations (StandardScaler for columns with a normal distribution and Yeo-Johnson scaling for skewed data). These transformations help the model see the patterns in the data better as it places all the numbers on the same scale. Without transformations any column with large numbers like Speed_km_h_mean compared to columns with smaller numbers like ACWR will dominate the model during training.</p>
+<p>Two further features were added to the dataset, and that was event and time-to-event. Where event is a boolean value (0 or 1) denoting if a player got injured within the next seven days (1) or not (0). Time-to-event was the number of days leading up to the event (starting at 7 days back). See an example of the unscaled dataset below:</p>
+<div id="ea337e6a" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-stdout">
+<pre><code>Calculating 21-day moving averages per player...</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">player_name</th>
+<th data-quarto-table-cell-role="th">date</th>
+<th data-quarto-table-cell-role="th">is_injured_today</th>
+<th data-quarto-table-cell-role="th">injury_onset</th>
+<th data-quarto-table-cell-role="th">event</th>
+<th data-quarto-table-cell-role="th">duration</th>
+<th data-quarto-table-cell-role="th">ATL</th>
+<th data-quarto-table-cell-role="th">Weekly load</th>
+<th data-quarto-table-cell-role="th">Monotony</th>
+<th data-quarto-table-cell-role="th">Strain</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">sp_hir_t</th>
+<th data-quarto-table-cell-role="th">sp_hir_d</th>
+<th data-quarto-table-cell-role="th">sp_hir_p</th>
+<th data-quarto-table-cell-role="th">sp_spr_t</th>
+<th data-quarto-table-cell-role="th">sp_spr_d</th>
+<th data-quarto-table-cell-role="th">sp_spr_p</th>
+<th data-quarto-table-cell-role="th">has_gps_data</th>
+<th data-quarto-table-cell-role="th">has_session_data</th>
+<th data-quarto-table-cell-role="th">wellness_reported</th>
+<th data-quarto-table-cell-role="th">is_rest_day</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
+<td>2020-01-01</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>7</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
+<td>2020-01-02</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>7</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
+<td>2020-01-03</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>7</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
+<td>2020-01-04</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>7</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
+<td>2020-01-05</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>7</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 45 columns</p>
+</div>
+</div>
+</div>
+<p>So, how do we use these features to inform us whether a player is at a high risk of injury or not? Well, this is where Survival Analysis comes into play. For this problem I have used the <a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/random-survival-forest.html">Random Forest Survival</a> model and trained it on the features we see above using a leave one player out process. This means the model was trained on every player except one and then the trained model was applied to that one player to mimic a real world application. This process was repeated with each player.</p>
+<p>The results are promising. Look at the plot below!</p>
+<div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images\survival_risk_plot_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Plot 1
+</figcaption>
+</figure>
+</div>
+<div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images\survival_risk_plot_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Plot 2
+</figcaption>
+</figure>
+</div>
+<p>These plots visualise how the risk value corresponds with actual injury periods. Before each injury there is a peak in risk. This can serve as an incredibly valuable tool in managing player load and injury prevention. Now one may note that there are periods of increased injury risk yet no injury takes place. This is just the nature of the sport, a player may be teetering on the edge but due to luck or good, intuitive, player management by the coach, that player was spared an injury and missing those all too important gameweek days.</p>
+<p>Now I hear you asking, “What causes the risk to spike?”. That’s a great question dear reader. SHAP analysis does a good job of answering this question by identifying the impact each feature has on the risk score. See the corresponding SHAP plots below.</p>
 
 
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Rm9vdGJhbGw=" data-listing-date-sort="1779660000000" data-listing-file-modified-sort="1779745356880" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="818">
-<div class="thumbnail"><a href="./Injury Prediction/post.html" class="no-external">
-
-<img loading="lazy" src="./Injury Prediction/images/injury_pred_thumbnail.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./Injury Prediction/post.html" class="no-external">Football Player Injury Risk Analysis</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Rm9vdGJhbGw='); return false;">Football</div>
-
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-catterall2026timetoinjury" class="csl-entry" role="listitem">
+Catterall, Victoria, Cise Midoglu, and Stephen Lynch. 2026. <em>Time-to-Injury Forecasting in Elite Female Football: A DeepHit Survival Approach</em>. <a href="https://arxiv.org/abs/2601.19479">https://arxiv.org/abs/2601.19479</a>.
 </div>
-<div class="delink listing-description"><a href="./Injury Prediction/post.html" class="no-external">
-Listen, football injuries aren’t cool. I’ve elborated on this in depth in my previous blog post so let me not bore you with further ramblings. I want to get down to the meat…
-</a></div>
+<div id="ref-midoglu2022soccermon" class="csl-entry" role="listitem">
+Midoglu, Cise, Matthias Boeker, Andreas Kjæreng Winther, et al. 2022. <span>“SoccerMon: A Large-Scale Multivariate Soccer Athlete Health, Performance, and Position Monitoring Dataset.”</span> Version v1. Zenodo. <a href="https://doi.org/10.5281/zenodo.10033832">https://doi.org/10.5281/zenodo.10033832</a>.
 </div>
-<div class="metadata">
-<a href="./Injury Prediction/post.html" class="no-external">
-<div class="listing-date">
-May 25, 2026
-</div>
-<div class="listing-author">
-Gareth Edwards
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Rm9vdGJhbGw=" data-listing-date-sort="1777586400000" data-listing-file-modified-sort="1778535725962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3815">
-<div class="thumbnail"><a href="./Injury Viz/post.html" class="no-external">
-
-<img loading="lazy" src="./Injury Viz/injury_v_position.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./Injury Viz/post.html" class="no-external">What’s the deal with all the injuries??</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Rm9vdGJhbGw='); return false;">Football</div>
-
-</div>
-<div class="delink listing-description"><a href="./Injury Viz/post.html" class="no-external">
-Have you ever watched a movie where the main character ends up dying? This is how I feel every time my favorite football team plays a match and I see a player down with…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./Injury Viz/post.html" class="no-external">
-<div class="listing-date">
-May 1, 2026
-</div>
-<div class="listing-author">
-Gareth Edwards
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Rm9vdGJhbGw=" data-listing-date-sort="1723759200000" data-listing-file-modified-sort="1778091463962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1394">
-<div class="thumbnail"><a href="./xT/post.html" class="no-external">
-
-<img loading="lazy" src="./xT/thumbnail.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./xT/post.html" class="no-external">Italian xT</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Rm9vdGJhbGw='); return false;">Football</div>
-
-</div>
-<div class="delink listing-description"><a href="./xT/post.html" class="no-external">
-Expected threat, or xT, is a concept widely spoken, widely used and already well known. To hop onto the trend, I made use of the “Calculating xT (position-based)” tutorial…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./xT/post.html" class="no-external">
-<div class="listing-date">
-Aug 16, 2024
-</div>
-<div class="listing-author">
-Gareth Edwards
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="Rm9vdGJhbGw=" data-listing-date-sort="1721685600000" data-listing-file-modified-sort="1778077946441" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3198">
-<div class="thumbnail"><a href="./Bayer Leverkusen/post.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="Bayer Leverkusen\post_files\figure-html\pass-network-all-passes-1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./Bayer Leverkusen/post.html" class="no-external">Bayer Leverkusen Goal Analysis</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Rm9vdGJhbGw='); return false;">Football</div>
-
-</div>
-<div class="delink listing-description"><a href="./Bayer Leverkusen/post.html" class="no-external">
-The 2023/24 season of the Bundesliga will be remembered as one of the most extraordinary chapters in German football history. Bayer Leverkusen, a club often overshadowed by…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./Bayer Leverkusen/post.html" class="no-external">
-<div class="listing-date">
-Jul 23, 2024
-</div>
-<div class="listing-author">
-Gareth Edwards
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
