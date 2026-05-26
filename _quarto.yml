@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Gareth Edwards"
+  google-analytics: "G-F43XL2R4CB"
   search: false
   navbar:
     right:
