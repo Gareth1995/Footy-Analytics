@@ -12,21 +12,69 @@ format:
     code-fold: false # Allows readers to hide/show your Python code
 ---
 
-Listen, football injuries aren't cool. I've elborated on this in depth in my previous blog post so let me not bore you with further ramblings. I want to get down to the meat (pause).
+Listen, football injuries aren't cool. I've elborated on this in depth in my [previous blog post](../Injury Viz/post.qmd) so let me not bore you with further ramblings. I want to get down to the meat (pause).
 
-We know how critical injury prevention is for a Premier League team who want to win the league. The average number of gameweeks missed per player for a team closely correlates with where that team finishes in the season, and this is especially true for the top sides in England. The margins are extremely fine. The plot below shows us that teams who maintain lower average gameweeks missed per player are far more likely to finish in the top two.
+We know how critical injury prevention is for a Premier League team who want to win the league. The average number of gameweeks missed per player for a team closely correlates with that team's final league position, and this is especially true for the top sides in England. The margins are extremely fine. The plot below shows us that teams who maintain lower average gameweeks missed per player are far more likely to finish in the top two. Or in other words, teams who top the average-gameweeks-missed-per-player board (with the lowest number) are most likely to also top the Premier League table!
 
 ![Average Gameweeks Missed vs. League Finish](images\injury_corr_with_league_position.png){#fig-injury-plot fig-align="center" width="80%"}
 
-The question now begs, how can a team prevent these injuries from happening? The answer may be found in survival analysis. Survival analysis models time-to-event and has the ability to convert this to a risk score over time. It helps the coaching staff and physio staff to know, at a given time, what is the injury risk score of player x.
+The question now begs, how can a team prevent these injuries from happening? The answer may be found in survival analysis. Survival analysis models the time to an event and has the ability to convert this to a risk score over time. It helps the coaching staff and physio staff to know, at a given time, what is the injury risk score of player x.
 
 The approach I took was to loosely follow the study by Catrell et al [@catterall2026timetoinjury]. Here a Survival Analysis was carried out on the SoccerMon dataset [@midoglu2022soccermon]. SoccerMon is "A Large-Scale Multivariate Soccer Athlete Health, Performance, and Position Monitoring Dataset". SoccerMon is the largest soccer athlete dataset available that tracks both subjective (using questionnaire methods) and objective features (using GPS trackers and other sensors). The data comes from two teams from the Norwegian women's elite soccer league over the span of two years (2020-2021).
 
-I used this paper to inform which features I extract from the SoccerMon dataset. Below is a list of the features I extracted...
+I used this paper to inform which features I extract from the SoccerMon dataset. Below is a list of the features I extracted. Each feature represents a 21 day moving average of that feature.
 
-Each feature represents a 21 day moving average of that feature.
+| Feature             | Definition                                                                      | Type       |
+| ------------------- | ------------------------------------------------------------------------------- | ---------- |
+| `player_name`       | Unique identifier/name of the player.                                           |            |
+| `date`              | Date of the observation or training session.                                    |            |
+| `ATL`               | Acute Training Load                                                             | objective  |
+| `Weekly load`       | Total accumulated training load over the last week.                             | objective  |
+| `Monotony`          | Training monotony metric                                                        | objective  |
+| `Strain`            | Training strain metric                                                          | objective  |
+| `ACWR`              | Acute:Chronic Workload Ratio                                                    | objective  |
+| `CTL28`             | Chronic Training Load calculated over the previous 28 days.                     | objective  |
+| `CTL42`             | Chronic Training Load calculated over the previous 42 days.                     | objective  |
+| `Fatigue`           | Self-reported fatigue score from the wellness questionnaire.                    | subjective |
+| `Mood`              | Self-reported mood score from the wellness questionnaire.                       | subjective |
+| `Readiness`         | Self-reported readiness-to-train score.                                         | subjective |
+| `Sleep duration`    | Number of hours slept prior to the report.                                      | subjective |
+| `Soreness`          | Self-reported muscle soreness score.                                            | subjective |
+| `Stress`            | Self-reported stress level score.                                               | subjective |
+| `daily_load`        | Total training load accumulated on that day.                                    | objective  |
+| `sRPE`              | Session Rating of Perceived Exertion load, typically session duration × RPE.    | objective  |
+| `duration obj`      | Objectively measured session duration.                                          | objective  |
+| `RPE`               | Rating of Perceived Exertion reported by the athlete after the session.         | subjective |
+| `Speed_km_h_mean`   | Mean speed recorded during the session (km/h).                                  | objective  |
+| `Speed_km_h_max`    | Maximum speed recorded during the session (km/h).                               | objective  |
+| `Speed_km_h_std`    | Standard deviation of speed during the session.                                 | objective  |
+| `Distance`          | Total distance covered during the session.                                      | objective  |
+| `distance_per_min`  | Average distance covered per minute of activity.                                | objective  |
+| `total_time_min`    | Total duration of the session in minutes.                                       | objective  |
+| `sp_lir_t`          | Time spent in the Low-Intensity Running speed zone.                             | objective  |
+| `sp_lir_d`          | Distance covered in the Low-Intensity Running speed zone.                       | objective  |
+| `sp_lir_p`          | Percentage of total session spent in the Low-Intensity Running speed zone.      | objective  |
+| `sp_mir_t`          | Time spent in the Moderate-Intensity Running speed zone.                        | objective  |
+| `sp_mir_d`          | Distance covered in the Moderate-Intensity Running speed zone.                  | objective  |
+| `sp_mir_p`          | Percentage of total session spent in the Moderate-Intensity Running speed zone. | objective  |
+| `sp_hir_t`          | Time spent in the High-Intensity Running speed zone.                            | objective  |
+| `sp_hir_d`          | Distance covered in the High-Intensity Running speed zone.                      | objective  |
+| `sp_hir_p`          | Percentage of total session spent in the High-Intensity Running speed zone.     | objective  |
+| `sp_spr_t`          | Time spent sprinting.                                                           | objective  |
+| `sp_spr_d`          | Distance covered while sprinting.                                               | objective  |
+| `sp_spr_p`          | Percentage of total session spent sprinting.                                    | objective  |
+| `has_gps_data`      | Indicator that GPS measurements are available for the session.                  | objective  |
+| `has_session_data`  | Indicator that session/training load data are available.                        | objective  |
+| `wellness_reported` | Indicator that the athlete completed the wellness questionnaire.                | objective  |
+| `is_rest_day`       | Indicator that the day was designated as a rest day.                            | objective  |
+| `is_injured_today`  | Indicator that the player was injured on the given date.                        | objective  |
+| `injury_onset`      | Indicator marking the first day of an injury event.                             | objective  |
+| `event`             | Survival-analysis event indicator                                               | objective  |
+| `time_to_event`     | Survival-analysis time-to-event variable (days)                                 | derived    |
 
-After extensive EDA, data splitting and the necessary transformations (StandardScaler for columns with a normal distribution and Yeo-Johnson scaling for skewed data). These transformations help the model see the patterns in the data better as it places all the numbers on the same scale. Without transformations any column with large numbers like Speed_km_h_mean compared to columns with smaller numbers like ACWR will dominate the model during training.
+
+
+Extensive EDA and necessary transformations (StandardScaler for columns with a normal distribution and Yeo-Johnson scaling for skewed data) were applied. These transformations help the model see the patterns in the data better as it places all the numbers on the same scale. Without transformations any column with large numbers like Speed_km_h_mean compared to columns with smaller numbers like ACWR will dominate the model during training.
 
 Two further features were added to the dataset, and that was event and time-to-event. Where event is a boolean value (0 or 1) denoting if a player got injured within the next seven days (1) or not (0). Time-to-event was the number of days leading up to the event (starting at 7 days back). See an example of the unscaled dataset below:
 
@@ -61,7 +109,6 @@ meta_cols = ['player_name', 'date', 'is_injured_today', 'injury_onset', 'event',
 feature_cols = [col for col in injury_dataset.columns if col not in meta_cols]
 
 # 3. Calculate the 21-day moving average per player
-print("Calculating 21-day moving averages per player...")
 rolling_features = (
     injury_dataset.groupby('player_name')[feature_cols]
     .rolling(window=21, min_periods=1)
@@ -78,16 +125,45 @@ injury_dataset = pd.concat([injury_dataset[meta_cols], rolling_features], axis=1
 
 injury_dataset.head()
 ```
-
+\
 So, how do we use these features to inform us whether a player is at a high risk of injury or not? Well, this is where Survival Analysis comes into play. For this problem I have used the [Random Forest Survival](https://scikit-survival.readthedocs.io/en/stable/user_guide/random-survival-forest.html) model and trained it on the features we see above using a leave one player out process. This means the model was trained on every player except one and then the trained model was applied to that one player to mimic a real world application. This process was repeated with each player.
 
-The results are promising. Look at the plot below!
+The results are promising! The plots below show player injury risk over time with a vertical line showing where an injury actual occured. Notice how the injuries always occur around where an increased injury risk is!
 
-![Plot 1](images\survival_risk_plot_1.png){#fig-injury-plot fig-align="center" width="80%"}
+![Injury Risk Overtime for Player A](images\survival_risk_plot_1.png){#fig-injury-plot fig-align="center" width="80%"}
 
-![Plot 2](images\survival_risk_plot_2.png){#fig-injury-plot fig-align="center" width="80%"}
+![Injury Risk Overtime for Player B](images\survival_risk_plot_2.png){#fig-injury-plot fig-align="center" width="80%"}
 
-These plots visualise how the risk value corresponds with actual injury periods. Before each injury there is a peak in risk. This can serve as an incredibly valuable tool in managing player load and injury prevention. Now one may note that there are periods of increased injury risk yet no injury takes place. This is just the nature of the sport, a player may be teetering on the edge but due to luck or good, intuitive, player management by the coach, that player was spared an injury and missing those all too important gameweek days.
+These plots visualise how the risk value corresponds with actual injury periods. Before each injury there is a peak in injury risk. This can serve as an incredibly valuable tool in managing player load and injury prevention. One may note that there are periods of heightened injury risk where no injury ultimately occurs. This is simply the nature of the sport. A player may be teetering on the edge, but through a combination of luck and good, intuitive management by the coaching staff, they avoid injury and remain available for those all-important gameweek fixtures.
 
-Now I hear you asking, "What causes the risk to spike?". That's a great question dear reader. SHAP analysis does a good job of answering this question by identifying the impact each feature has on the risk score. See the corresponding SHAP plots below. 
+These risk scores are great at finding portions in the season where a player may get injured, but what does the coach or physio do about this? It will be very difficult to tell the coach to go easy on a player just because a blue line is high and not low. And then again, what does "go easy on a player" even mean? Does that mean don't play them in the next match, give them a day off, just give them light drills, etc?
 
+SHAP analysis can answer these questions, not just on a global level but at a player specific level! Take a look at the SHAP values below for Player A and Player B.
+
+![Feature Influence for Player A](images\shap_plot_1.png){#fig-injury-plot fig-align="center" width="80%"}
+
+![Feature Influence for Player B](images\shap_plot_2.png){#fig-injury-plot fig-align="center" width="80%"}
+
+These plots are known as beeswarm plots. Each dot represents a day, the colour of that dot represents whether the score for that feature was high (red) or low (blue) and the position of the dot tells us if the feature value pushed the model to predict a higher risk of injury (right) or lower risk of injury (left) 
+
+Let's zoom in on what we are seeing for Player A:
+- Mood, soreness, daily_load, fatigue, RPE, stress influence the risk score the most.
+- Higher than normal mood scores are pushing the injury risk upwards!?
+- Higher than normal levels of soreness are pushing the injury risk upwards
+- A bit of a mix for daily_load but higher levels seemed to stand out and could perhaps be beneficial for Player A
+- Higher than normal levels of fatigue push the injury risk upwards
+- Higher than normal ratings of RPE (Rating of Perceived Exertion) decrease the injury risk for Player A
+- Higher than normal stress levels increase the risk of injruy for Player A.
+
+Now lets zoom in on Player B:
+- Player B shows the same pattern for mood, fatigue and soreness
+- Higher than normal readiness scores push the injury risk upwards for Player B
+- Higher than normal levels of strain reduces the injury risk for Player B
+- Higher than normal levels of CTL28 reduces the injury risk for Player B
+
+### Conclusion
+Survival analysis is a great tool to mitigate player injuries for a sport's team with a Random Forest Survival model being one of the highest performing models for this task. While injury risk overtime is great, understanding what drives that risk up or down is equally as important.
+
+Features that drive risk scores are not always intuitive and differ from player to player. For one player higher intensity training may actually reduce injury risk. Some intuitive features show that increased levels of perceived soreness and fatigue lead to injury risk. More unintuitive outcomes show that higher than normal mood scores actually increase risk injury. Given that mood score is a very subjective metric it is difficult to say what one player means to be a "good" mood compared to another.
+
+Overall, there is considerable promise in combining Survival Analysis with SHAP-based interpretability at the individual player level to quantify and understand injury risk over time.
