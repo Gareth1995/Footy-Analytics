@@ -160,8 +160,8 @@ div.csl-indent {
 </header>
 
 
-<p>Listen, football injuries aren’t cool. I’ve elborated on this in depth in my previous blog post so let me not bore you with further ramblings. I want to get down to the meat (pause).</p>
-<p>We know how critical injury prevention is for a Premier League team who want to win the league. The average number of gameweeks missed per player for a team closely correlates with where that team finishes in the season, and this is especially true for the top sides in England. The margins are extremely fine. The plot below shows us that teams who maintain lower average gameweeks missed per player are far more likely to finish in the top two.</p>
+<p>Listen, football injuries aren’t cool. I’ve elborated on this in depth in my <a href="../Injury Viz/post.html">previous blog post</a> so let me not bore you with further ramblings. I want to get down to the meat (pause).</p>
+<p>We know how critical injury prevention is for a Premier League team who want to win the league. The average number of gameweeks missed per player for a team closely correlates with that team’s final league position, and this is especially true for the top sides in England. The margins are extremely fine. The plot below shows us that teams who maintain lower average gameweeks missed per player are far more likely to finish in the top two. Or in other words, teams who top the average-gameweeks-missed-per-player board (with the lowest number) are most likely to also top the Premier League table!</p>
 <div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -172,16 +172,253 @@ Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
 </figcaption>
 </figure>
 </div>
-<p>The question now begs, how can a team prevent these injuries from happening? The answer may be found in survival analysis. Survival analysis models time-to-event and has the ability to convert this to a risk score over time. It helps the coaching staff and physio staff to know, at a given time, what is the injury risk score of player x.</p>
+<p>The question now begs, how can a team prevent these injuries from happening? The answer may be found in survival analysis. Survival analysis models the time to an event and has the ability to convert this to a risk score over time. It helps the coaching staff and physio staff to know, at a given time, what is the injury risk score of player x.</p>
 <p>The approach I took was to loosely follow the study by Catrell et al <span class="citation" data-cites="catterall2026timetoinjury">(<a href="#ref-catterall2026timetoinjury" role="doc-biblioref">Catterall et al. 2026</a>)</span>. Here a Survival Analysis was carried out on the SoccerMon dataset <span class="citation" data-cites="midoglu2022soccermon">(<a href="#ref-midoglu2022soccermon" role="doc-biblioref">Midoglu et al. 2022</a>)</span>. SoccerMon is “A Large-Scale Multivariate Soccer Athlete Health, Performance, and Position Monitoring Dataset”. SoccerMon is the largest soccer athlete dataset available that tracks both subjective (using questionnaire methods) and objective features (using GPS trackers and other sensors). The data comes from two teams from the Norwegian women’s elite soccer league over the span of two years (2020-2021).</p>
-<p>I used this paper to inform which features I extract from the SoccerMon dataset. Below is a list of the features I extracted…</p>
-<p>Each feature represents a 21 day moving average of that feature.</p>
-<p>After extensive EDA, data splitting and the necessary transformations (StandardScaler for columns with a normal distribution and Yeo-Johnson scaling for skewed data). These transformations help the model see the patterns in the data better as it places all the numbers on the same scale. Without transformations any column with large numbers like Speed_km_h_mean compared to columns with smaller numbers like ACWR will dominate the model during training.</p>
+<p>I used this paper to inform which features I extract from the SoccerMon dataset. Below is a list of the features I extracted. Each feature represents a 21 day moving average of that feature.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 73%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Definition</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>player_name</code></td>
+<td>Unique identifier/name of the player.</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>date</code></td>
+<td>Date of the observation or training session.</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>ATL</code></td>
+<td>Acute Training Load</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>Weekly load</code></td>
+<td>Total accumulated training load over the last week.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>Monotony</code></td>
+<td>Training monotony metric</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>Strain</code></td>
+<td>Training strain metric</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>ACWR</code></td>
+<td>Acute:Chronic Workload Ratio</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>CTL28</code></td>
+<td>Chronic Training Load calculated over the previous 28 days.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>CTL42</code></td>
+<td>Chronic Training Load calculated over the previous 42 days.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>Fatigue</code></td>
+<td>Self-reported fatigue score from the wellness questionnaire.</td>
+<td>subjective</td>
+</tr>
+<tr class="odd">
+<td><code>Mood</code></td>
+<td>Self-reported mood score from the wellness questionnaire.</td>
+<td>subjective</td>
+</tr>
+<tr class="even">
+<td><code>Readiness</code></td>
+<td>Self-reported readiness-to-train score.</td>
+<td>subjective</td>
+</tr>
+<tr class="odd">
+<td><code>Sleep duration</code></td>
+<td>Number of hours slept prior to the report.</td>
+<td>subjective</td>
+</tr>
+<tr class="even">
+<td><code>Soreness</code></td>
+<td>Self-reported muscle soreness score.</td>
+<td>subjective</td>
+</tr>
+<tr class="odd">
+<td><code>Stress</code></td>
+<td>Self-reported stress level score.</td>
+<td>subjective</td>
+</tr>
+<tr class="even">
+<td><code>daily_load</code></td>
+<td>Total training load accumulated on that day.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>sRPE</code></td>
+<td>Session Rating of Perceived Exertion load, typically session duration × RPE.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>duration obj</code></td>
+<td>Objectively measured session duration.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>RPE</code></td>
+<td>Rating of Perceived Exertion reported by the athlete after the session.</td>
+<td>subjective</td>
+</tr>
+<tr class="even">
+<td><code>Speed_km_h_mean</code></td>
+<td>Mean speed recorded during the session (km/h).</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>Speed_km_h_max</code></td>
+<td>Maximum speed recorded during the session (km/h).</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>Speed_km_h_std</code></td>
+<td>Standard deviation of speed during the session.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>Distance</code></td>
+<td>Total distance covered during the session.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>distance_per_min</code></td>
+<td>Average distance covered per minute of activity.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>total_time_min</code></td>
+<td>Total duration of the session in minutes.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>sp_lir_t</code></td>
+<td>Time spent in the Low-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>sp_lir_d</code></td>
+<td>Distance covered in the Low-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>sp_lir_p</code></td>
+<td>Percentage of total session spent in the Low-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>sp_mir_t</code></td>
+<td>Time spent in the Moderate-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>sp_mir_d</code></td>
+<td>Distance covered in the Moderate-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>sp_mir_p</code></td>
+<td>Percentage of total session spent in the Moderate-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>sp_hir_t</code></td>
+<td>Time spent in the High-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>sp_hir_d</code></td>
+<td>Distance covered in the High-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>sp_hir_p</code></td>
+<td>Percentage of total session spent in the High-Intensity Running speed zone.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>sp_spr_t</code></td>
+<td>Time spent sprinting.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>sp_spr_d</code></td>
+<td>Distance covered while sprinting.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>sp_spr_p</code></td>
+<td>Percentage of total session spent sprinting.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>has_gps_data</code></td>
+<td>Indicator that GPS measurements are available for the session.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>has_session_data</code></td>
+<td>Indicator that session/training load data are available.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>wellness_reported</code></td>
+<td>Indicator that the athlete completed the wellness questionnaire.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>is_rest_day</code></td>
+<td>Indicator that the day was designated as a rest day.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>is_injured_today</code></td>
+<td>Indicator that the player was injured on the given date.</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>injury_onset</code></td>
+<td>Indicator marking the first day of an injury event.</td>
+<td>objective</td>
+</tr>
+<tr class="even">
+<td><code>event</code></td>
+<td>Survival-analysis event indicator</td>
+<td>objective</td>
+</tr>
+<tr class="odd">
+<td><code>time_to_event</code></td>
+<td>Survival-analysis time-to-event variable (days)</td>
+<td>derived</td>
+</tr>
+</tbody>
+</table>
+<p>Extensive EDA and necessary transformations (StandardScaler for columns with a normal distribution and Yeo-Johnson scaling for skewed data) were applied. These transformations help the model see the patterns in the data better as it places all the numbers on the same scale. Without transformations any column with large numbers like Speed_km_h_mean compared to columns with smaller numbers like ACWR will dominate the model during training.</p>
 <p>Two further features were added to the dataset, and that was event and time-to-event. Where event is a boolean value (0 or 1) denoting if a player got injured within the next seven days (1) or not (0). Time-to-event was the number of days leading up to the event (starting at 7 days back). See an example of the unscaled dataset below:</p>
-<div id="ea337e6a" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stdout">
-<pre><code>Calculating 21-day moving averages per player...</code></pre>
-</div>
+<div id="67c1ec38" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
@@ -341,15 +578,16 @@ Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
 </div>
 </div>
 </div>
-<p>So, how do we use these features to inform us whether a player is at a high risk of injury or not? Well, this is where Survival Analysis comes into play. For this problem I have used the <a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/random-survival-forest.html">Random Forest Survival</a> model and trained it on the features we see above using a leave one player out process. This means the model was trained on every player except one and then the trained model was applied to that one player to mimic a real world application. This process was repeated with each player.</p>
-<p>The results are promising. Look at the plot below!</p>
+<p><br>
+So, how do we use these features to inform us whether a player is at a high risk of injury or not? Well, this is where Survival Analysis comes into play. For this problem I have used the <a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/random-survival-forest.html">Random Forest Survival</a> model and trained it on the features we see above using a leave one player out process. This means the model was trained on every player except one and then the trained model was applied to that one player to mimic a real world application. This process was repeated with each player.</p>
+<p>The results are promising! The plots below show player injury risk over time with a vertical line showing where an injury actual occured. Notice how the injuries always occur around where an increased injury risk is!</p>
 <div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images\survival_risk_plot_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Plot 1
+Figure&nbsp;2: Injury Risk Overtime for Player A
 </figcaption>
 </figure>
 </div>
@@ -359,15 +597,45 @@ Figure&nbsp;2: Plot 1
 <img src="images\survival_risk_plot_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Plot 2
+Figure&nbsp;3: Injury Risk Overtime for Player B
 </figcaption>
 </figure>
 </div>
-<p>These plots visualise how the risk value corresponds with actual injury periods. Before each injury there is a peak in risk. This can serve as an incredibly valuable tool in managing player load and injury prevention. Now one may note that there are periods of increased injury risk yet no injury takes place. This is just the nature of the sport, a player may be teetering on the edge but due to luck or good, intuitive, player management by the coach, that player was spared an injury and missing those all too important gameweek days.</p>
-<p>Now I hear you asking, “What causes the risk to spike?”. That’s a great question dear reader. SHAP analysis does a good job of answering this question by identifying the impact each feature has on the risk score. See the corresponding SHAP plots below.</p>
+<p>These plots visualise how the risk value corresponds with actual injury periods. Before each injury there is a peak in injury risk. This can serve as an incredibly valuable tool in managing player load and injury prevention. One may note that there are periods of heightened injury risk where no injury ultimately occurs. This is simply the nature of the sport. A player may be teetering on the edge, but through a combination of luck and good, intuitive management by the coaching staff, they avoid injury and remain available for those all-important gameweek fixtures.</p>
+<p>These risk scores are great at finding portions in the season where a player may get injured, but what does the coach or physio do about this? It will be very difficult to tell the coach to go easy on a player just because a blue line is high and not low. And then again, what does “go easy on a player” even mean? Does that mean don’t play them in the next match, give them a day off, just give them light drills, etc?</p>
+<p>SHAP analysis can answer these questions, not just on a global level but at a player specific level! Take a look at the SHAP values below for Player A and Player B.</p>
+<div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images\shap_plot_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Feature Influence for Player A
+</figcaption>
+</figure>
+</div>
+<div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images\shap_plot_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Feature Influence for Player B
+</figcaption>
+</figure>
+</div>
+<p>These plots are known as beeswarm plots. Each dot represents a day, the colour of that dot represents whether the score for that feature was high (red) or low (blue) and the position of the dot tells us if the feature value pushed the model to predict a higher risk of injury (right) or lower risk of injury (left)</p>
+<p>Let’s zoom in on what we are seeing for Player A: - Mood, soreness, daily_load, fatigue, RPE, stress influence the risk score the most. - Higher than normal mood scores are pushing the injury risk upwards!? - Higher than normal levels of soreness are pushing the injury risk upwards - A bit of a mix for daily_load but higher levels seemed to stand out and could perhaps be beneficial for Player A - Higher than normal levels of fatigue push the injury risk upwards - Higher than normal ratings of RPE (Rating of Perceived Exertion) decrease the injury risk for Player A - Higher than normal stress levels increase the risk of injruy for Player A.</p>
+<p>Now lets zoom in on Player B: - Player B shows the same pattern for mood, fatigue and soreness - Higher than normal readiness scores push the injury risk upwards for Player B - Higher than normal levels of strain reduces the injury risk for Player B - Higher than normal levels of CTL28 reduces the injury risk for Player B</p>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Survival analysis is a great tool to mitigate player injuries for a sport’s team with a Random Forest Survival model being one of the highest performing models for this task. While injury risk overtime is great, understanding what drives that risk up or down is equally as important.</p>
+<p>Features that drive risk scores are not always intuitive and differ from player to player. For one player higher intensity training may actually reduce injury risk. Some intuitive features show that increased levels of perceived soreness and fatigue lead to injury risk. More unintuitive outcomes show that higher than normal mood scores actually increase risk injury. Given that mood score is a very subjective metric it is difficult to say what one player means to be a “good” mood compared to another.</p>
+<p>Overall, there is considerable promise in combining Survival Analysis with SHAP-based interpretability at the individual player level to quantify and understand injury risk over time.</p>
 
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-catterall2026timetoinjury" class="csl-entry" role="listitem">
