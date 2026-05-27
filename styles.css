@@ -18,11 +18,12 @@
 .left-pane {
     flex: 1 1 40%;
     background-color: #f4f4f4;
-    padding: 4rem 2rem;
+    /* padding is: Top Right Bottom Left */
+    padding: 6rem 2rem 4rem 2rem; 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* This ensures your profile pic stays centered vertically */
+    justify-content: flex-start; /* <--- This pushes everything to the top instead of the center */
     text-align: center;
 }
 
@@ -52,10 +53,16 @@
 .right-pane {
     flex: 1 1 60%;
     background-color: #ffffff;
-    padding: 4rem;
+    /* padding is: Top Right Bottom Left */
+    padding: 0rem 4rem 4rem 4rem; 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* <--- This raises the text to the top */
+}
+
+/*Remove top padding on right pane header*/
+.right-pane h1:first-of-type {
+    margin-top: 0 !important;
 }
 
 .right-pane h1 {
@@ -69,7 +76,7 @@
     font-size: 1.1rem;
     line-height: 1.7;
     color: #444;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1rem;
 }
 
 /* --- CUSTOM BUTTONS --- */
@@ -93,7 +100,7 @@
 
 .button-group {
     display: flex;
-    gap: 15px;
+    gap: 15px; 
 }
 
 /* --- SOCIAL ICONS --- */
