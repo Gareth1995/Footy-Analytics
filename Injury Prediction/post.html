@@ -169,7 +169,7 @@ gtag('config', 'G-F43XL2R4CB', { 'anonymize_ip': true});
 </header>
 
 
-<p>Listen, football injuries aren’t cool. I’ve elborated on this in depth in my <a href="../Injury Viz/post.html">previous blog post</a> so let me not bore you with further ramblings. I want to get down to the meat (pause).</p>
+<p>Listen, football injuries aren’t cool. I’ve elaborated on this in depth in my <a href="../Injury Viz/post.html">previous blog post</a> so let me not bore you with further ramblings.</p>
 <p>We know how critical injury prevention is for a Premier League team who want to win the league. The average number of gameweeks missed per player for a team closely correlates with that team’s final league position, and this is especially true for the top sides in England. The margins are extremely fine. The plot below shows us that teams who maintain lower average gameweeks missed per player are far more likely to finish in the top two. Or in other words, teams who top the average-gameweeks-missed-per-player board (with the lowest number) are most likely to also top the Premier League table!</p>
 <div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -181,8 +181,8 @@ Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
 </figcaption>
 </figure>
 </div>
-<p>The question now begs, how can a team prevent these injuries from happening? The answer may be found in survival analysis. Survival analysis models the time to an event and has the ability to convert this to a risk score over time. It helps the coaching staff and physio staff to know, at a given time, what is the injury risk score of player x.</p>
-<p>The approach I took was to loosely follow the study by Catrell et al <span class="citation" data-cites="catterall2026timetoinjury">(<a href="#ref-catterall2026timetoinjury" role="doc-biblioref">Catterall et al. 2026</a>)</span>. Here a Survival Analysis was carried out on the SoccerMon dataset <span class="citation" data-cites="midoglu2022soccermon">(<a href="#ref-midoglu2022soccermon" role="doc-biblioref">Midoglu et al. 2022</a>)</span>. SoccerMon is “A Large-Scale Multivariate Soccer Athlete Health, Performance, and Position Monitoring Dataset”. SoccerMon is the largest soccer athlete dataset available that tracks both subjective (using questionnaire methods) and objective features (using GPS trackers and other sensors). The data comes from two teams from the Norwegian women’s elite soccer league over the span of two years (2020-2021).</p>
+<p>This begs the question, how can a team prevent these injuries from happening? The answer may be found in survival analysis. Survival analysis models the time to an event and has the ability to convert this to a risk score over time. It helps the coaching staff and physio staff to know, at a given time, what is the injury risk score of player x.</p>
+<p>The approach I took was to loosely follow the study by Catrell et al. <span class="citation" data-cites="catterall2026timetoinjury">(<a href="#ref-catterall2026timetoinjury" role="doc-biblioref">Catterall et al. 2026</a>)</span>. Here a Survival Analysis was carried out on the SoccerMon dataset <span class="citation" data-cites="midoglu2022soccermon">(<a href="#ref-midoglu2022soccermon" role="doc-biblioref">Midoglu et al. 2022</a>)</span>. SoccerMon is “A Large-Scale Multivariate Soccer Athlete Health, Performance, and Position Monitoring Dataset”. SoccerMon is the largest soccer athlete dataset available that tracks both subjective (using questionnaire methods) and objective features (using GPS trackers and other sensors). The data comes from two teams from the Norwegian women’s elite soccer league over the span of two years (2020-2021).</p>
 <p>I used this paper to inform which features I extract from the SoccerMon dataset. Below is a list of the features I extracted. Each feature represents a 21 day moving average of that feature.</p>
 <table class="caption-top table">
 <colgroup>
@@ -427,7 +427,7 @@ Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
 </table>
 <p>Extensive EDA and necessary transformations (StandardScaler for columns with a normal distribution and Yeo-Johnson scaling for skewed data) were applied. These transformations help the model see the patterns in the data better as it places all the numbers on the same scale. Without transformations any column with large numbers like Speed_km_h_mean compared to columns with smaller numbers like ACWR will dominate the model during training.</p>
 <p>Two further features were added to the dataset, and that was event and time-to-event. Where event is a boolean value (0 or 1) denoting if a player got injured within the next seven days (1) or not (0). Time-to-event was the number of days leading up to the event (starting at 7 days back). See an example of the unscaled dataset below:</p>
-<div id="04ff8712" class="cell" data-execution_count="1">
+<div id="3aec6d96" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
@@ -461,124 +461,124 @@ Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
-<td>2020-01-01</td>
+<th data-quarto-table-cell-role="th">1143</th>
+<td>TeamB-29c5271b-5c46-455e-91ea-da2abfa8ff3c</td>
+<td>2020-08-10</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>7</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>233.673333</td>
+<td>1635.714286</td>
+<td>1.699048</td>
+<td>2900.757143</td>
 <td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
+<td>0.060317</td>
+<td>0.021745</td>
+<td>0.000379</td>
+<td>0.000317</td>
+<td>0.000133</td>
+<td>0.000001</td>
+<td>0.285714</td>
+<td>0.857143</td>
+<td>0.809524</td>
+<td>0.142857</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
-<td>2020-01-02</td>
+<th data-quarto-table-cell-role="th">1144</th>
+<td>TeamB-29c5271b-5c46-455e-91ea-da2abfa8ff3c</td>
+<td>2020-08-11</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>7</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>239.047619</td>
+<td>1673.333333</td>
+<td>1.743333</td>
+<td>2987.342857</td>
 <td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
+<td>0.071905</td>
+<td>0.026021</td>
+<td>0.000443</td>
+<td>0.001429</td>
+<td>0.000605</td>
+<td>0.000007</td>
+<td>0.333333</td>
+<td>0.857143</td>
+<td>0.809524</td>
+<td>0.142857</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
-<td>2020-01-03</td>
+<th data-quarto-table-cell-role="th">1145</th>
+<td>TeamB-29c5271b-5c46-455e-91ea-da2abfa8ff3c</td>
+<td>2020-08-12</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>7</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>243.197619</td>
+<td>1702.380952</td>
+<td>1.778095</td>
+<td>3060.814286</td>
 <td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
+<td>0.139524</td>
+<td>0.050366</td>
+<td>0.001400</td>
+<td>0.006984</td>
+<td>0.003020</td>
+<td>0.000086</td>
+<td>0.380952</td>
+<td>0.809524</td>
+<td>0.809524</td>
+<td>0.190476</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
-<td>2020-01-04</td>
+<th data-quarto-table-cell-role="th">1146</th>
+<td>TeamB-29c5271b-5c46-455e-91ea-da2abfa8ff3c</td>
+<td>2020-08-13</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>7</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>244.490476</td>
+<td>1711.428571</td>
+<td>1.800000</td>
+<td>3100.466667</td>
 <td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
+<td>0.139524</td>
+<td>0.050366</td>
+<td>0.001400</td>
+<td>0.006984</td>
+<td>0.003020</td>
+<td>0.000086</td>
+<td>0.380952</td>
+<td>0.809524</td>
+<td>0.809524</td>
+<td>0.190476</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>TeamB-08e35b7b-d2ad-411f-a0de-4e663f14c3c3</td>
-<td>2020-01-05</td>
+<th data-quarto-table-cell-role="th">1147</th>
+<td>TeamB-29c5271b-5c46-455e-91ea-da2abfa8ff3c</td>
+<td>2020-08-14</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>7</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>243.878571</td>
+<td>1707.142857</td>
+<td>1.803810</td>
+<td>3099.347619</td>
 <td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
+<td>0.182540</td>
+<td>0.066014</td>
+<td>0.001636</td>
+<td>0.007619</td>
+<td>0.003287</td>
+<td>0.000090</td>
+<td>0.428571</td>
+<td>0.809524</td>
+<td>0.809524</td>
+<td>0.190476</td>
 </tr>
 </tbody>
 </table>
@@ -587,9 +587,8 @@ Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
 </div>
 </div>
 </div>
-<p><br>
-So, how do we use these features to inform us whether a player is at a high risk of injury or not? Well, this is where Survival Analysis comes into play. For this problem I have used the <a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/random-survival-forest.html">Random Forest Survival</a> model and trained it on the features we see above using a leave one player out process. This means the model was trained on every player except one and then the trained model was applied to that one player to mimic a real world application. This process was repeated with each player.</p>
-<p>The results are promising! The plots below show player injury risk over time with a vertical line showing where an injury actual occured. Notice how the injuries always occur around where an increased injury risk is!</p>
+<p>So, how do we use these features to inform us whether a player is at a high risk of injury or not? Well, this is where Survival Analysis comes into play. For this problem I have used the <a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/random-survival-forest.html">Random Forest Survival</a> model and trained it on the features we see above using a leave one player out process. This means the model was trained on every player except one and then the trained model was applied to that one player to mimic a real world application. This process was repeated with each player.</p>
+<p>The results are promising! The plots below show player injury risk over time with a vertical line showing where an injury actually occured. Notice how the injuries always occur around where an increased injury risk is!</p>
 <div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -610,7 +609,19 @@ Figure&nbsp;3: Injury Risk Overtime for Player B
 </figcaption>
 </figure>
 </div>
+<div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images\survival_risk_plot_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Injury Risk Overtime for Player C
+</figcaption>
+</figure>
+</div>
 <p>These plots visualise how the risk value corresponds with actual injury periods. Before each injury there is a peak in injury risk. This can serve as an incredibly valuable tool in managing player load and injury prevention. One may note that there are periods of heightened injury risk where no injury ultimately occurs. This is simply the nature of the sport. A player may be teetering on the edge, but through a combination of luck and good, intuitive management by the coaching staff, they avoid injury and remain available for those all-important gameweek fixtures.</p>
+<p>Notice the c-index score at the bottom left of each plot. The c-index means essentially how well the model ranks danger rather than predicting exact futures. Because sports injuries are relatively rare, an AI could theoretically be 99% “accurate” simply by guessing that no one ever gets hurt—which is completely useless to a coaching staff.</p>
+<p>Instead, the C-index grades the model like an Emergency Room triage nurse. Just as a triage nurse doesn’t predict exactly when a patient will heal but correctly prioritizes someone with chest pains over someone with a paper cut, the C-index evaluates prioritization. It looks at a player’s timeline and asks: If we randomly pick one healthy training day and one actual pre-injury day, did the model correctly assign a higher risk score to the dangerous day? A score of 0.50 means the model is effectively flipping a coin, 0.70 indicates a solid ranking ability, and anything over 0.80 means you have a highly reliable early-warning system to keep your squad on the pitch.</p>
 <p>These risk scores are great at finding portions in the season where a player may get injured, but what does the coach or physio do about this? It will be very difficult to tell the coach to go easy on a player just because a blue line is high and not low. And then again, what does “go easy on a player” even mean? Does that mean don’t play them in the next match, give them a day off, just give them light drills, etc?</p>
 <p>SHAP analysis can answer these questions, not just on a global level but at a player specific level! Take a look at the SHAP values below for Player A and Player B.</p>
 <div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -619,7 +630,7 @@ Figure&nbsp;3: Injury Risk Overtime for Player B
 <img src="images\shap_plot_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Feature Influence for Player A
+Figure&nbsp;5: Feature Influence for Player A
 </figcaption>
 </figure>
 </div>
@@ -629,16 +640,42 @@ Figure&nbsp;4: Feature Influence for Player A
 <img src="images\shap_plot_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Feature Influence for Player B
+Figure&nbsp;6: Feature Influence for Player B
 </figcaption>
 </figure>
 </div>
-<p>These plots are known as beeswarm plots. Each dot represents a day, the colour of that dot represents whether the score for that feature was high (red) or low (blue) and the position of the dot tells us if the feature value pushed the model to predict a higher risk of injury (right) or lower risk of injury (left)</p>
-<p>Let’s zoom in on what we are seeing for Player A: - Mood, soreness, daily_load, fatigue, RPE, stress influence the risk score the most. - Higher than normal mood scores are pushing the injury risk upwards!? - Higher than normal levels of soreness are pushing the injury risk upwards - A bit of a mix for daily_load but higher levels seemed to stand out and could perhaps be beneficial for Player A - Higher than normal levels of fatigue push the injury risk upwards - Higher than normal ratings of RPE (Rating of Perceived Exertion) decrease the injury risk for Player A - Higher than normal stress levels increase the risk of injruy for Player A.</p>
-<p>Now lets zoom in on Player B: - Player B shows the same pattern for mood, fatigue and soreness - Higher than normal readiness scores push the injury risk upwards for Player B - Higher than normal levels of strain reduces the injury risk for Player B - Higher than normal levels of CTL28 reduces the injury risk for Player B</p>
+<div id="fig-injury-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images\shap_plot_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-injury-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Feature Influence for Player C
+</figcaption>
+</figure>
+</div>
+<p>These plots are known as beeswarm plots. Each dot represents a feature’s scores for a specific day, the colour of that dot represents whether the score for that feature was high (red) or low (blue) and the position of the dot tells us if the feature value pushed the model to predict a higher risk of injury (right) or lower risk of injury (left)</p>
+<p>Let’s zoom in on what we are seeing for Player A:</p>
+<ul>
+<li>Mood, soreness, daily_load, fatigue, RPE, stress influence the risk score the most.</li>
+<li>Higher than normal mood scores are pushing the injury risk upwards!?</li>
+<li>Higher than normal levels of soreness are pushing the injury risk upwards</li>
+<li>A bit of a mix for daily_load but higher levels seemed to stand out and could perhaps be beneficial for Player A</li>
+<li>Higher than normal levels of fatigue push the injury risk upwards</li>
+<li>Higher than normal ratings of RPE (Rating of Perceived Exertion) decrease the injury risk for Player A</li>
+<li>Higher than normal stress levels increase the risk of injury for Player A.</li>
+</ul>
+<p>Now let’s zoom in on Player B:</p>
+<ul>
+<li>Player B shows the same pattern for mood, fatigue and soreness</li>
+<li>Higher than normal readiness scores push the injury risk upwards for Player B</li>
+<li>Higher than normal levels of strain reduces the injury risk for Player B</li>
+<li>Higher than normal levels of CTL28 reduces the injury risk for Player B</li>
+</ul>
+<p>Player C seems to follow a similar pattern portrayed for Player A and B with regards to mood, fatigue and soreness.</p>
 <section id="conclusion" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
-<p>Survival analysis is a great tool to mitigate player injuries for a sport’s team with a Random Forest Survival model being one of the highest performing models for this task. While injury risk overtime is great, understanding what drives that risk up or down is equally as important.</p>
+<p>Survival analysis is a great tool to mitigate player injuries for a sports team with a Random Forest Survival model being one of the highest performing models for this task. While injury risk overtime is great, understanding what drives that risk up or down is equally as important.</p>
 <p>Features that drive risk scores are not always intuitive and differ from player to player. For one player higher intensity training may actually reduce injury risk. Some intuitive features show that increased levels of perceived soreness and fatigue lead to injury risk. More unintuitive outcomes show that higher than normal mood scores actually increase risk injury. Given that mood score is a very subjective metric it is difficult to say what one player means to be a “good” mood compared to another.</p>
 <p>Overall, there is considerable promise in combining Survival Analysis with SHAP-based interpretability at the individual player level to quantify and understand injury risk over time.</p>
 
