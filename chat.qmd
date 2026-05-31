@@ -1,0 +1,16 @@
+---
+title: "Chat to me"
+format:
+  html:
+    page-layout: full
+---
+
+Want to know about my work experience, blog posts or interests, feel free to chat to my AI avatar here. This is very much a beta version, so be nice...
+
+```{=html}
+<iframe
+	src="https://brownenergy-career-conversation.hf.space"
+	frameborder="0"
+    width="100%"
+    style="height: calc(100vh - 120px); border: none; display: block; margin: 0; padding: 0;"
+></iframe>

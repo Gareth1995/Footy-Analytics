@@ -11,6 +11,8 @@ website:
         text: Home
       - href: blog.qmd
         text: Articles
+      - href: chat.qmd          
+        text: Chat to me        
       - href: my_cv.pdf
         text: CV
         target: _blank
