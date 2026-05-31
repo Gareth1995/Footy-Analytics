@@ -25,13 +25,13 @@ format:
 ::: {.right-pane}
 # Welcome to my Portfolio
 
-If you are into Football, data, or anything else, you are in the right place. They say the journey is often better than the destination, but that doesn't apply here. You have landed on my personal web page and you won't be disappointed. Read something. Learn something. Contact me. Don't contact me. Do what you want to do, never let a stranger tell you what to do.
+If you are into Football, data, or anything else, you are in the right place. Big shoutout to myself for writing this bio without using the assistance of an LLM. I might just through in a spelling error to highlight my authenticity. On the other hand, if you have more questions about my blog posts, work experience, etc, feel free to ask my AI avatar [here](https://gareth1995.github.io/Gareth-Edwards-Website/chat.html) (Please note that it is a chatbot and not me).
 
-Reach out if you see something interesting and want to colab on something or discuss a topic you may be interested in.
+Feel free to reach out if you see something interesting and want to colab on something or discuss a topic you may be interested in.
 
-And to end off with an inspirational quote:
+And to end off with a piece of sound advice:
 
-"Just do it." \
+"Don't believe it just because it's in quotation marks." \
 - Sir Isaac Newton
 
 <!-- ::: {.button-group}
