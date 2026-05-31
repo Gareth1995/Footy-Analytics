@@ -117,6 +117,10 @@ gtag('config', 'G-F43XL2R4CB', { 'anonymize_ip': true});
 <span class="menu-text">Articles</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../chat.html"> 
+<span class="menu-text">Chat to me</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../my_cv.pdf" target="_blank"> 
 <span class="menu-text">CV</span></a>
   </li>  
@@ -427,7 +431,7 @@ Figure&nbsp;1: Average Gameweeks Missed vs.&nbsp;League Finish
 </table>
 <p>Extensive EDA and necessary transformations (StandardScaler for columns with a normal distribution and Yeo-Johnson scaling for skewed data) were applied. These transformations help the model see the patterns in the data better as it places all the numbers on the same scale. Without transformations any column with large numbers like Speed_km_h_mean compared to columns with smaller numbers like ACWR will dominate the model during training.</p>
 <p>Two further features were added to the dataset, and that was event and time-to-event. Where event is a boolean value (0 or 1) denoting if a player got injured within the next seven days (1) or not (0). Time-to-event was the number of days leading up to the event (starting at 7 days back). See an example of the unscaled dataset below:</p>
-<div id="3bc7cd54" class="cell" data-execution_count="1">
+<div id="eac16ed6" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
